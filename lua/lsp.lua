@@ -104,6 +104,12 @@ M.on_attach = function(client, bufnr)
         })
     end
 
+    if client.supports_method(methods.textDocument_codeAction) then
+        map('n', "<leader>lc", lsp.code_action, {
+            desc = "[l]sp [c]ode action"
+        })
+    end
+
     if client.supports_method(methods.textDocument_declaration) then
         map('n', "gD", lsp.declaration, "go to [de]claration")
     end
