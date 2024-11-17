@@ -208,6 +208,9 @@ local function neogit()
         }
     })
     prequire('neogit').setup()
+    vim.keymap.set("n", "<leader>gs", "<cmd>Neogit<CR>", {
+        desc = "Neogit"
+    })
 end
 
 local function markdown()
