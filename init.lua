@@ -248,6 +248,17 @@ local function gitsigns()
     prequire('plugins.gitsigns')
 end
 
+local function barbecue()
+    add({
+        source = "utilyre/barbecue.nvim",
+        depends = {
+            "SmiteshP/nvim-navic",
+            "echasnovski/mini.icons"
+        }
+    })
+    prequire('barbecue').setup()
+end
+
 local function copilot()
     add({
         source = "CopilotC-Nvim/CopilotChat.nvim",
@@ -283,6 +294,7 @@ now(function()
     colorscheme()
     dressing()
     hop()
+    barbecue()
     mini()
     blink()
     lsp()
