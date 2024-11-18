@@ -248,6 +248,24 @@ local function gitsigns()
     prequire('plugins.gitsigns')
 end
 
+local function copilot()
+    add({
+        source = "CopilotC-Nvim/CopilotChat.nvim",
+        checkout = "canary",
+        depends = {
+            "zbirenbaum/copilot.lua"
+        },
+        hooks = {
+            post_checkout = function(args)
+                vim.system({ 'make', 'tiktoken' }, {
+                    cwd = args.path
+                })
+            end
+        }
+    })
+    prequire('plugins.copilot')
+end
+
 now(function()
     require('globals')
     prequire('options')
@@ -270,6 +288,7 @@ later(function()
     snacks()
     nvim_tmux_nav()
     session_manager()
+    copilot()
     textobjects()
     colorizer()
     lua_console()
