@@ -1,4 +1,9 @@
-prequire('mini.ai').setup()
+prequire('mini.ai').setup({
+    n_lines = 500,
+    custom_textobjects = {
+        g = require('mini.extra').gen_ai_spec.buffer()
+    }
+})
 
 prequire('mini.move').setup()
 
