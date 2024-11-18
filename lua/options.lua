@@ -207,9 +207,12 @@ o.title = false      -- don't set the title of window to the value of the titles
 
 o.belloff = "all"    -- I NEVER WANT TO HEAR THE BELL.
 o.visualbell = false
-o.grepformat = "%f:%l:%c:%m"
-o.grepprg = "rg --vimgrep"
-o.ttyfast = true                  -- let vim know i am using a fast term
+if vim.fn.executable("rg") then
+    o.grepprg = "rg --vimgrep --smart-case --follow"
+    o.grepformat = "%f:%l:%c:%m"
+end
+o.ttyfast = true -- let vim know i am using a fast term
+o.autoread = true
 
 o.formatoptions = o.formatoptions -- :help fo-table
     - "a"                         -- dont autoformat
