@@ -205,9 +205,18 @@ local function neogit()
             "nvim-lua/plenary.nvim",         -- required
             "sindrets/diffview.nvim",        -- optional - Diff integration
             "nvim-telescope/telescope.nvim", -- optional
+            "nvim-tree/nvim-web-devicons"    -- icons
         }
     })
-    prequire('neogit').setup()
+    prequire('neogit').setup({
+        integrations = {
+            telescope = true,
+            diffview = true,
+        },
+        disable_insert_on_commit = true,
+        kind = "replace",
+        graph_style = "unicode"
+    })
     vim.keymap.set("n", "<leader>gs", "<cmd>Neogit<CR>", {
         desc = "Neogit"
     })
