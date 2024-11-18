@@ -266,6 +266,14 @@ local function copilot()
     prequire('plugins.copilot')
 end
 
+local function hop()
+    add({
+        source = "smoka7/hop.nvim",
+        checkout = "*"
+    })
+    prequire("plugins.hop")
+end
+
 now(function()
     require('globals')
     prequire('options')
@@ -274,6 +282,7 @@ now(function()
     statuscol()
     colorscheme()
     dressing()
+    hop()
     mini()
     blink()
     lsp()
