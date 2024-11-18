@@ -38,6 +38,9 @@ mapn("<C-j>", "<cmd>NvimTmuxNavigateDown<CR>", { desc = "Navigate Down" })
 mapn("<C-k>", "<cmd>NvimTmuxNavigateUp<CR>", { desc = "Navigate Up" })
 mapn("<C-l>", "<cmd>NvimTmuxNavigateRight<CR>", { desc = "Navigate Right" })
 
+mapn("<leader>r", [[:%s/\<<C-r><C-w>\>//g<Left><Left>]], { desc = "search and replace word under cursor" })
+mapn("<leader>cc", [[:%s/\s\+$//e<cr>]], { desc = "remove trailing spaces" })
+
 mapn("x", '"_dl')
 mapn("X", '"_dh')
 
