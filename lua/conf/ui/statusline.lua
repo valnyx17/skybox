@@ -1,4 +1,4 @@
-local utils = require("ui.utils")
+local utils = require("conf.ui.utils")
 local get_opt = vim.api.nvim_get_option_value
 
 local M = {}
@@ -322,6 +322,6 @@ M.render = function()
 end
 
 
-vim.o.statusline = "%!v:lua.require('ui.statusline').render()"
+vim.o.statusline = "%!v:lua.require('conf.ui.statusline').render()"
 
 return M

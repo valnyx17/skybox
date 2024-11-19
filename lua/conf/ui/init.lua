@@ -1,5 +1,5 @@
 -- all based off of https://github.com/mcauley-penney/nvim
-require("ui.statusline")
+require("conf.ui.statusline")
 
 local S = vim.diagnostic.severity
 local icons = tools.ui.icons

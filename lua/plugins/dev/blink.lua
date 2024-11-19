@@ -1,11 +1,21 @@
-prequire("lazydev").setup({
-    library = {
-        { path = "luvit-meta/library", words = { "vim%.uv" } },
-    }
-})
-
-prequire("blink.cmp").setup(
-    {
+return {
+    "saghen/blink.cmp",
+    lazy = false,
+    version = "v0.5.1",
+    dependencies = {
+        {
+            "folke/lazydev.nvim",
+            dependencies = {
+                "Bilal2453/luvit-meta"
+            },
+            opts = {
+                library = {
+                    { path = "luvit-meta/library", words = { "vim%.uv" } }
+                }
+            }
+        }
+    },
+    opts = {
         fuzzy = {
             prebuilt_binaries = {
                 force_version = "v0.5.1"
@@ -43,4 +53,4 @@ prequire("blink.cmp").setup(
             }
         }
     }
-)
+}
