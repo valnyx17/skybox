@@ -34,8 +34,8 @@ require("snacks").setup({
 _G.dd = function(...)
     Snacks.debug.inspect(...)
 end
-_G.bt = function(...)
-    Snacks.debug.backtrace(...)
+_G.bt = function()
+    Snacks.debug.backtrace()
 end
 vim.print = _G.dd
 
@@ -48,7 +48,7 @@ vim.keymap.set("n", "<leader>gB", function() Snacks.gitbrowse() end, { desc = "G
 vim.keymap.set("n", "<leader>lf", function() Snacks.lazygit.log_file() end, { desc = "Lazygit Current File History" })
 vim.keymap.set("n", "<leader>gl", function() Snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
 vim.keymap.set("n", "<leader>cr", function() Snacks.rename() end, { desc = "Rename File" })
-vim.keymap.set({"n", "t"}, "<c-,>", function() Snacks.terminal.toggle() end, { desc = "Toggle Terminal" })
+vim.keymap.set({ "n", "t" }, "<c-,>", function() Snacks.terminal.toggle() end, { desc = "Toggle Terminal" })
 vim.keymap.set({ "n", "t" }, "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Next Reference" })
 vim.keymap.set({ "n", "t" }, "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "Prev Reference" })
 -- stylua: ignore end
