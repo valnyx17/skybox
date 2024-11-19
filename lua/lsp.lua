@@ -84,30 +84,19 @@ M.on_attach = function(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_definition) then
-        map('n', "gd", require("telescope.builtin").lsp_definitions, {
-            buffer = bufnr,
-            desc = "[g]oto [d]efinition"
-        })
+        map('n', "gd", require("telescope.builtin").lsp_definitions, "[g]oto [d]efinition")
     end
 
     if client.supports_method(methods.textDocument_references) then
-        map('n', "gr", require("telescope.builtin").lsp_references, {
-            buffer = bufnr,
-            desc = "[g]oto [r]eferences"
-        })
+        map('n', "gr", require("telescope.builtin").lsp_references, "[g]oto [r]eferences")
     end
 
     if client.supports_method(methods.textDocument_implementation) then
-        map('n', "gI", require("telescope.builtin").lsp_implementations, {
-            buffer = bufnr,
-            desc = "[g]oto [i]mplentation"
-        })
+        map('n', "gI", require("telescope.builtin").lsp_implementations, "[g]oto [i]mplentation")
     end
 
     if client.supports_method(methods.textDocument_codeAction) then
-        map('n', "<leader>lc", lsp.code_action, {
-            desc = "[l]sp [c]ode action"
-        })
+        map('n', "<leader>lc", lsp.code_action, "[l]sp [c]ode action")
     end
 
     if client.supports_method(methods.textDocument_declaration) then
