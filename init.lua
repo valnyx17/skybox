@@ -66,5 +66,12 @@ prequire("lazy").setup({
     },
 })
 
-prequire('conf.keybinds')
 prequire('conf.autocmds')
+prequire('conf.functions')
+
+vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+        prequire('conf.keybinds')
+    end
+})

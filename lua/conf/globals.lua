@@ -34,7 +34,7 @@ _G.tools = {
             -- r_chev = '>',
             r_chev = '',
             location = '⌘',
-            square = '⏹ ',
+            square = '□ ',
             ballot_x = '🗴',
             up_tri = '▲',
             info_i = '¡',
@@ -244,3 +244,11 @@ tools.group_number = function(num, sep)
         return num:reverse():gsub('(%d%d%d)', '%1' .. sep):reverse():gsub('^,', '')
     end
 end
+
+--- check if a certain feature/version/commit exists in nvim
+---@param feature string
+---@return boolean
+tools.has = function(feature)
+    return vim.fn.has(feature) > 0
+end
+
