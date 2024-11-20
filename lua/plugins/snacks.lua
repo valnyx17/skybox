@@ -1,6 +1,5 @@
 return {
     "folke/snacks.nvim",
-    lazy = false,
     config = function()
         require("snacks").setup({
             bigfile = { enabled = true },

@@ -3,6 +3,7 @@ return {
         "nvim-treesitter/nvim-treesitter",
         module = "nvim-treesitter",
         build = ":TSUpdate",
+        event = { "VeryLazy" },
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
         },
@@ -23,7 +24,6 @@ return {
     },
     {
         "danymat/neogen",
-        lazy = false,
         dependencies = "nvim-treesitter/nvim-treesitter",
         opts = {
             languages = {
@@ -48,12 +48,12 @@ return {
     -- Treesitter context
     {
         "nvim-treesitter/nvim-treesitter-context",
-        lazy = false,
         opts = { mode = "cursor", max_lines = 2 },
     },
 
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
+        event = "VeryLazy",
         config = function()
             require("nvim-treesitter.configs").setup({
                 highlight = { enable = true },

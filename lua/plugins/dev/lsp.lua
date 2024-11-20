@@ -21,7 +21,6 @@ local caps = vim.tbl_deep_extend(
 return {
     {
         "neovim/nvim-lspconfig",
-        lazy = false,
         dependencies = {
             {
                 "williamboman/mason.nvim",
@@ -88,20 +87,6 @@ return {
                     require("mason-lspconfig").setup_handlers(populate_setup(lsp.servers, lsp.on_attach))
                 end
             },
-            {
-                "WhoIsSethDaniel/mason-tool-installer.nvim",
-                event = { "BufReadPre", "BufNewFile" },
-                opts = {
-                    ensure_installed = {
-                        "beautysh",
-                        "biome",
-                        "eslint-lsp",
-                        "gopls",
-                        "prettier",
-                    },
-                    automatic_installation = true,
-                },
-            }
         },
         config = function()
             require("lspconfig.ui.windows").default_options.border = tools.ui.cur_border
@@ -115,6 +100,20 @@ return {
                 capabilities = caps
             })
         end
+    },
+    {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        opts = {
+            ensure_installed = {
+                "beautysh",
+                "biome",
+                "eslint-lsp",
+                "gopls",
+                "prettier",
+            },
+            automatic_installation = true,
+        },
     },
     {
         "j-hui/fidget.nvim",
@@ -152,7 +151,6 @@ return {
     },
     {
         "utilyre/barbecue.nvim",
-        lazy = false,
         dependencies = {
             "SmiteshP/nvim-navic",
         },

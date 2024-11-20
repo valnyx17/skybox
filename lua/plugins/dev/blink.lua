@@ -1,6 +1,5 @@
 return {
     "saghen/blink.cmp",
-    lazy = false,
     version = "v0.5.1",
     dependencies = {
         {

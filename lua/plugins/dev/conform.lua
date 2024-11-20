@@ -7,6 +7,8 @@ local slow_format_filetypes = { "typescript", "typescriptreact", "javascriptreac
 
 return {
     "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConfirmInfo" },
     opts = {
         formatters = {
             sql_formatter = {

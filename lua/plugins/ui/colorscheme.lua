@@ -23,7 +23,6 @@ local colors = {
 
 return {
     "rmehri01/onenord.nvim",
-    lazy = false,
     opts = {
         custom_colors = colors,
         styles = {

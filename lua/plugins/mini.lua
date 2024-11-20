@@ -1,6 +1,5 @@
 return {
     "echasnovski/mini.nvim",
-    lazy = false,
     config = function()
         prequire('mini.ai').setup({
             n_lines = 500,

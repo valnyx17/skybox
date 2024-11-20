@@ -46,7 +46,7 @@ prequire("lazy").setup({
         fallback = true,
     },
     defaults = {
-        lazy = true, -- explicitly disable lazy loading
+        lazy = false,
         version = false,
     },
     performance = {

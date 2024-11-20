@@ -28,6 +28,13 @@ return {
     },
     {
         "epwalsh/obsidian.nvim",
+        event = {
+            "BufReadPre " .. vim.fn.expand("~") .. "/zet/*.md",
+            "BufNewFile " .. vim.fn.expand("~") .. "/zet/*.md",
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
         opts = {
             workspaces = {
                 {

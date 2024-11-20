@@ -1,6 +1,5 @@
 return {
     "monaqa/dial.nvim",
-    lazy = false,
     config = function()
         local augend = require("dial.augend")
         local toggle = require("dial.augend").constant.new
