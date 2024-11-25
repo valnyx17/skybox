@@ -23,12 +23,6 @@ return {
 
         prequire('mini.comment').setup()
 
-        prequire('mini.files').setup()
-
-        vim.keymap.set("n", "<leader>fe", function()
-            MiniFiles.open()
-        end, { desc = "open minifiles" })
-
         prequire('mini.surround').setup({
             mappings = {
                 add = 'ys',            -- Add surrounding in Normal and Visual modes
