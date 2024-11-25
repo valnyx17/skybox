@@ -67,7 +67,6 @@ prequire("lazy").setup({
 })
 
 prequire('conf.autocmds')
-prequire('conf.functions')
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
