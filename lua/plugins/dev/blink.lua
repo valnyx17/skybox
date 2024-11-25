@@ -31,9 +31,18 @@ return {
             ["<M-l>"] = { "snippet_forward", "fallback" },
             ["<M-h>"] = { "snippet_backward", "fallback" },
         },
-
+        auto_brackets = {
+            enabled = true
+        },
         highlight = {
             use_nvim_cmp_as_default = true,
+        },
+        windows = {
+            documentation = {
+                auto_show = true,
+                auto_show_delay_ms = 0,
+                update_delay_ms = 0
+            }
         },
         nerd_font_variant = "mono",
         sources = {
