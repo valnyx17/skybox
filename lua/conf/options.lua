@@ -90,7 +90,7 @@ o.diffopt = {
 }
 
 -- ui stuff
-o.cursorline = true
+o.cursorline = false
 o.whichwrap:append("<,>,h,l,[,],b,s")
 o.foldlevelstart = 4
 o.foldtext = ""

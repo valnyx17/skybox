@@ -107,5 +107,9 @@ return {
         keys = {
             { "<leader>gs", "<cmd>Neogit<cr>", desc = "Neogit" }
         }
+    },
+    {
+        "f-person/git-blame.nvim",
+        event = "VeryLazy",
     }
 }

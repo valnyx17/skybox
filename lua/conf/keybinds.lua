@@ -44,9 +44,6 @@ mapn("<leader>cc", [[:%s/\s\+$//e<cr>]], { desc = "remove trailing spaces" })
 mapn("x", '"_dl')
 mapn("X", '"_dh')
 
-mapn("<C-d>", "<C-d>zz")
-mapn("<C-u>", "<C-u>zz")
-
 mapn("YY", "va{Vy")
 
 mapn("n", "nzz")

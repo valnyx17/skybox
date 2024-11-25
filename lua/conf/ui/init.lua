@@ -14,37 +14,6 @@ local lsp_signs = {
 vim.diagnostic.config({
     underline = true,
     severity_sort = true,
-    virtual_text = {
-        prefix = "",
-        format = function(diagnostic)
-            local limit = 0
-            local total = (#vim.diagnostic.get(0, { lnum = diagnostic.lnum })) - 1
-            local prefix = tools.ui.icons["diamond"]
-            local clean_src_names = {
-                ['Lua Diagnostics.'] = 'lua',
-                ['Lua Syntax Check.'] = 'lua',
-            }
-
-            local msg = prefix
-            if total > limit then
-                msg = string.format("%s+%s ", msg, total)
-            end
-
-            msg = string.format("%s %s", msg, diagnostic.message)
-
-            if diagnostic.code then
-                msg = string.format("%s ['%s'", msg, diagnostic.code)
-
-                if diagnostic.source then
-                    msg = string.format('%s from %s]', msg, clean_src_names[diagnostic.source] or diagnostic.source)
-                else
-                    msg = msg .. ']'
-                end
-            end
-
-            return msg
-        end,
-    },
     float = {
         header = ' ',
         border = tools.ui.cur_border,
