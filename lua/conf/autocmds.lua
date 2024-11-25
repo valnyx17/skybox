@@ -33,3 +33,9 @@ autocmds.create({ 'BufEnter', 'BufWritePre' }, {
         vim.fn.matchadd("WarnHint", "\\( WARN:\\)")
     end
 })
+
+autocmds.create("QuickFixCmdPost", {
+    callback = function()
+        vim.cmd([[Trouble qflist open]])
+    end
+})
