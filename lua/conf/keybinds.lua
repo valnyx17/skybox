@@ -104,6 +104,7 @@ end
 fish_style_abbr("V", "vert")
 fish_style_abbr("VS", "vert sb")
 fish_style_abbr("s", "s/g<Left><Left>")
+fish_style_abbr("%s", "%s/g<Left><Left>")
 fish_style_abbr("w", function()
     local auto_p = "w ++p"
     if vim.env.USER == "root" then
@@ -116,6 +117,8 @@ fish_style_abbr("w", function()
 end)
 fish_style_abbr("!", "term")
 fish_style_abbr("=", "term")
+fish_style_abbr("cdo", "cdo | update<Left><Left><Left><Left><Left><Left><Left><Left><Left>")
+fish_style_abbr("cfdo", "cfdo | update<Left><Left><Left><Left><Left><Left><Left><Left><Left>")
 
 --- visual mode mapper
 local mapv = create_mapper("v")
