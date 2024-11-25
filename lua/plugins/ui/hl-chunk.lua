@@ -9,7 +9,7 @@ return {
             },
             style = {
                 vim.api.nvim_get_hl(0, { name = "Whitespace" }),
-                vim.api.nvim_get_hl(0, { name = "Error" })
+                vim.api.nvim_get_hl(0, { name = "Conditional" })
             }
         },
         indent = {
