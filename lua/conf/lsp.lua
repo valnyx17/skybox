@@ -62,9 +62,9 @@ M.on_attach = function(client, bufnr)
         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
     end
 
-    map('n', "<leader>vd", function()
+    map('n', "<leader>ld", function()
         vim.diagnostic.open_float({ border = tools.ui.cur_border, })
-    end, "[v]iew [d]iagnostic float")
+    end, "view [l]sp [d]iagnostic float")
 
     if client.supports_method(methods.textDocument_formatting) then
         map('n', "<leader>lf", function() lsp.format({ timeout_ms = 2000 }) end, "[f]ormat with [L]SP")
