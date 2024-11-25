@@ -97,7 +97,23 @@ return {
                 hints = {
                     enabled = true
                 },
-                capabilities = caps
+                capabilities = caps,
+                cmd = { "nixd" },
+                settings = {
+                    nixd = {
+                        nixpkgs = {
+                            expr = { "import <nixpkgs> {}", "import (builtins.getFlake \"/home/valerie/nixos\").inputs.nixpkgs {}" }
+                        },
+                        formatting = {
+                            command = { "alejandra" }
+                        },
+                        options = {
+                            nixos = {
+                                expr = "(builtins.getFlake \"/home/valerie/nixos\").nixosConfigurations.waves.options"
+                            }
+                        }
+                    }
+                }
             })
         end
     },
