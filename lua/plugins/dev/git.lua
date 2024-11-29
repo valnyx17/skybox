@@ -2,56 +2,52 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         config = function()
-            local set_hl = vim.api.nvim_set_hl
-
-            local red = "DiagnosticError"
-            local ylw = "DiagnosticWarn"
-            local add_sym = '┃'
-            local change_sym = '┃'
-            local del_sym = '┃'
-
-            local sign_tbl = {}
-            local dim_hl, fg
-            for grp, cfg in pairs({
-                Add = { "DiagnosticOk", add_sym },
-                Change = { ylw, change_sym },
-                Changedelete = { ylw, change_sym },
-                Delete = { red, del_sym },
-                Topdelete = { red, del_sym },
-            }) do
-                fg = tools.get_hl_hex({ name = cfg[1] })["fg"]
-                dim_hl = tools.tint(fg, -25)
-                set_hl(0, "GitSigns" .. grp, { fg = dim_hl })
-
-                sign_tbl[string.lower(grp)] = { text = cfg[2] }
-            end
-
-            set_hl(0, "GitSignsUntracked", { link = "NonText" })
-            sign_tbl["untracked"] = { text = add_sym }
-
-
-            local diffadd_bg = tools.get_hl_hex({ name = "DiffAdd" })["bg"]
-            local diffrm_bg = tools.get_hl_hex({ name = "DiffDelete" })["bg"]
-            local diffadd_lighter = tools.tint(diffadd_bg, 75)
-            local diffrm_lighter = tools.tint(diffrm_bg, 75)
-
-            set_hl(0, "GitSignsAddInline", { link = "DiffAdd" })
-            set_hl(0, "GitSignsAddLnInline", { fg = "fg", bg = diffadd_lighter })
-            set_hl(0, "GitSignsChangeInline", { link = "DiffText" })
-            set_hl(0, "GitSignsChangeLnInline", { link = "DiffChange" })
-            set_hl(0, "GitSignsDeleteInline", { link = "DiffDelete" })
-            set_hl(0, "GitSignsDeleteLnInline", { fg = "fg", bg = diffrm_lighter })
-
             require("gitsigns").setup({
                 attach_to_untracked = false,
                 preview_config = {
-                    border = tools.ui.cur_border,
+                    border = v.ui.cur_border,
                     style = 'minimal',
                     relative = 'cursor',
                     row = 0,
                     col = 1
                 },
-                signs = sign_tbl,
+                signs =
+                {
+                    add = {
+                        -- hl = "GitSignsAdd",
+                        -- culhl = "GitSignsAddCursorLine",
+                        -- numhl = "GitSignsAddNum",
+                        text = v.ui.git.icons.add,
+                    }, -- alts: ▕, ▎, ┃, │, ▌, ▎ 🮉
+                    change = {
+                        -- hl = "GitSignsChange",
+                        -- culhl = "GitSignsChangeCursorLine",
+                        -- numhl = "GitSignsChangeNum",
+                        text = v.ui.git.icons.change,
+                    }, -- alts: ▎║▎
+                    delete = {
+                        -- hl = "GitSignsDelete",
+                        -- culhl = "GitSignsDeleteCursorLine",
+                        -- numhl = "GitSignsDeleteNum",
+                        text = v.ui.git.icons.delete,
+                    }, -- alts: ┊▎▎
+                    topdelete = {
+                        -- hl = "GitSignsDelete",
+                        text = v.ui.git.icons.topdelete,
+                    }, -- alts: ▌ ▄▀
+                    changedelete = {
+                        -- hl = "GitSignsChange",
+                        text = v.ui.git.icons.changedelete,
+                    }, -- alts: ▌
+                    untracked = {
+                        -- hl = "GitSignsAdd",
+                        text = v.ui.git.icons.untracked,
+                    }, -- alts: ┆ ▕
+                    signs_staged = {
+                        change = { text = "┋" },
+                        delete = { text = "🢒" },
+                    },
+                },
                 signcolumn = true,
                 update_debounce = 500,
                 on_attach = function(bufnr)
@@ -63,15 +59,15 @@ return {
                         vim.keymap.set(mode, l, r, opts)
                     end
 
-                    map('n', '<leader>gb', function() gs.blame_line({ full = false }) end)
-                    map('n', '<leader>gd', gs.diffthis)
-                    map('n', '<leader>gD', function() gs.diffthis('~') end)
-                    map("n", "<leader>gt", gs.toggle_signs)
-                    map("n", "<leader>hp", gs.preview_hunk)
-                    map("n", "<leader>hu", gs.undo_stage_hunk)
+                    map('n', '<leader>gb', function() gs.blame_line({ full = false }) end, { desc = "show line blame" })
+                    map('n', '<leader>gd', gs.diffthis, { desc = "gitsigns diffthis" })
+                    map('n', '<leader>gD', function() gs.diffthis('~') end, { desc = "gitsigns diffthis ~" })
+                    map("n", "<leader>gt", gs.toggle_signs, { desc = "gitsigns toggle signs" })
+                    map("n", "<leader>hp", gs.preview_hunk, { desc = "gitsigns preview hunk" })
+                    map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "gitsigns undo stage hunk" })
 
-                    map({ "n", "v" }, "<leader>hs", ':Gitsigns stage_hunk<CR>')
-                    map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>')
+                    map({ "n", "v" }, "<leader>hs", ':Gitsigns stage_hunk<CR>', { desc = "stage hunk" })
+                    map({ 'n', 'v' }, '<leader>hr', ':Gitsigns reset_hunk<CR>', { desc = "reset hunk" })
 
                     for map_str, fn in pairs({
                         ["]h"] = gs.next_hunk,
@@ -100,7 +96,16 @@ return {
                 telescope = true,
                 diffview = true,
             },
+            disable_commit_confirmation = true,
+            disable_signs = false,
+            disable_hint = true,
+            disable_builtin_notifications = true,
             disable_insert_on_commit = true,
+            signs = {
+                section = { "", "" }, -- "󰁙", "󰁊"
+                item = { "▸", "▾" },
+                hunk = { "󰐕", "󰍴" },
+            },
             kind = "replace",
             graph_style = "unicode"
         },
@@ -110,6 +115,16 @@ return {
     },
     {
         "f-person/git-blame.nvim",
-        event = "VeryLazy",
+        cmd = {
+            "GitBlameOpenCommitURL",
+            "GitBlameOpenFileURL",
+            "GitBlameCopyCommitURL",
+            "GitBlameCopyFileURL",
+            "GitBlameCopySHA",
+        },
+        keys = {
+            { "<localleader>gB", "<Cmd>GitBlameOpenCommitURL<CR>", desc = "git blame: open commit url", mode = "n" },
+        },
+        init = function() vim.g.gitblame_enabled = 0 end,
     }
 }

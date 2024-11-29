@@ -5,39 +5,148 @@ local borders = {
     invs = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' },
     thin = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' },
     edge = { '🭽', '▔', '🭾', '▕', '🭿', '▁', '🭼', '▏' }, -- Works in Kitty, Wezterm
+    empty = { " ", " ", " ", " ", " ", " ", " ", " " },
 }
 
-_G.prequire = function(...)
-    local ok, obj = pcall(require, ...)
-    if not ok then
-        vim.notify("failed to require" .. ...)
-    end
-    return obj
-end
-
-_G.tools = {
+_G.v = {
+    lsp = require("nyx.lsp"),
+    test = {
+        icons = {
+            passed = "", --alts: 
+            failed = "", --alts: 
+            running = "",
+            skipped = "○",
+            unknown = "", -- alts: 
+        },
+    },
     ui = {
         cur_border = borders.invs,
         borders = borders,
         icons = {
+            vscode = {
+                Text = "󰉿 ",
+                Method = "󰆧 ",
+                Function = "󰊕 ",
+                Constructor = " ",
+                Field = "󰜢 ",
+                Variable = "󰀫 ",
+                Class = "󰠱 ",
+                Interface = " ",
+                Module = " ",
+                Property = "󰜢 ",
+                Unit = "󰑭 ",
+                Value = "󰎠 ",
+                Enum = " ",
+                Keyword = "󰌋 ",
+                Snippet = " ",
+                Color = "󰏘 ",
+                File = "󰈙 ",
+                Reference = "󰈇 ",
+                Folder = "󰉋 ",
+                EnumMember = " ",
+                Constant = "󰏿 ",
+                Struct = "󰙅 ",
+                Event = " ",
+                Operator = "󰆕 ",
+                TypeParameter = " ",
+            },
             branch = '',
             bullet = '•',
             o_bullet = '○',
-            check = '✔',
-            d_chev = '∨',
+            -- d_chev = '∨',
+            d_chev = '▾',
             ellipses = '…',
             file = '╼ ',
             hamburger = '≡',
             diamond = '◇',
             tab = "→ ",
-            lock = '',
             -- r_chev = '>',
-            r_chev = '',
+            -- r_chev = '',
+            r_chev = '▸',
             location = '⌘',
             square = '□ ',
             ballot_x = '🗴',
             up_tri = '▲',
             info_i = '¡',
+            hint = "󰌵",
+            formatter = "", -- alts: 󰉼
+            buffers = "",
+            clock = "",
+            ellipsis = "…",
+            lblock = "▌",
+            rblock = "▐",
+            bug = "", -- alts: 
+            question = "",
+            lock = "󰌾", -- alts:   
+            shaded_lock = "",
+            circle = "",
+            project = "",
+            dashboard = "",
+            history = "󰄉",
+            comment = "󰅺",
+            robot = "󰚩", -- alts: 󰭆
+            lightbulb = "󰌵",
+            file_tree = "󰙅",
+            help = "󰋖", -- alts: 󰘥 󰮥 󰮦 󰋗 󰞋 󰋖
+            search = "", -- alts: 󰍉
+            code = "",
+            telescope = "",
+            terminal = "", -- alts: 
+            gear = "",
+            package = "",
+            list = "",
+            sign_in = "",
+            check = "✓", -- alts: ✓
+            fire = "",
+            note = "󰎛",
+            bookmark = "",
+            pencil = "󰏫",
+            arrow_right = "",
+            caret_right = "",
+            chevron_right = "",
+            double_chevron_right = "»",
+            table = "",
+            calendar = "",
+            flames = "󰈸", -- alts: 󱠇󰈸
+            vsplit = "◫",
+            v_border = "▐ ",
+            virtual_text = "◆",
+            mode_term = "",
+            ln_sep = "ℓ", -- alts: ℓ 
+            sep = "⋮",
+            perc_sep = "",
+            modified = "", -- alts: ∘✿✸✎ ○∘●●∘■ □ ▪ ▫● ◯ ◔ ◕ ◌ ◎ ◦ ◆ ◇ ▪▫◦∘∙⭘
+            mode = "",
+            vcs = "",
+            readonly = "",
+            prompt = "",
+            markdown = {
+                h1 = "◉", -- alts: 󰉫¹◉
+                h2 = "◆", -- alts: 󰉬²◆
+                h3 = "󱄅", -- alts: 󰉭³✿
+                h4 = "⭘", -- alts: 󰉮⁴○⭘
+                h5 = "◌", -- alts: 󰉯⁵◇◌
+                h6 = "", -- alts: 󰉰⁶
+                dash = "",
+            },
+        },
+        git = {
+            icons = {
+                add = "▕", -- alts:  ▕,▕, ▎, ┃, │, ▌, ▎ 🮉
+                change = "▕", -- alts:  ▕ ▎║▎
+                mod = "",
+                remove = "", -- alts: 
+                delete = "🮉", -- alts: ┊▎▎
+                topdelete = "🮉",
+                changedelete = "🮉",
+                untracked = "▕",
+                ignore = "",
+                rename = "",
+                diff = "",
+                repo = "",
+                symbol = "", -- alts:  
+                unstaged = "󰛄",
+            },
         }
     },
     nonprog_modes = {
@@ -88,7 +197,7 @@ local remote_cache = {}
 -- see https://www.reddit.com/r/neovim/comments/zy5s0l/you_dont_need_vimrooter_usually_or_how_to_set_up/
 -- @tparam  path: file to get root of
 -- @treturn path to the root of the filepath parameter
-tools.get_path_root = function(path)
+v.get_path_root = function(path)
     if path == "" then return end
 
     local root = vim.b.path_root
@@ -106,7 +215,7 @@ tools.get_path_root = function(path)
 end
 
 -- get the name of the remote repository
-tools.get_git_remote_name = function(root)
+v.get_git_remote_name = function(root)
     if root == nil then return end
 
     local remote = remote_cache[root]
@@ -128,7 +237,7 @@ tools.get_git_remote_name = function(root)
     return remote
 end
 
-tools.set_git_branch = function(root)
+v.set_git_branch = function(root)
     local cmd = table.concat({ "git", "-C", root, "branch --show-current" }, " ")
     local branch = vim.fn.system(cmd)
     if branch == nil then return nil end
@@ -139,24 +248,24 @@ tools.set_git_branch = function(root)
     return branch
 end
 
-tools.get_git_branch = function(root)
+v.get_git_branch = function(root)
     if root == nil then return end
 
     local branch = branch_cache[root]
     if branch ~= nil then return branch end
 
-    return tools.set_git_branch(root)
+    return v.set_git_branch(root)
 end
 
-tools.is_nonprog_ft = function()
-    return tools.nonprog_modes[vim.bo.filetype] ~= nil
+v.is_nonprog_ft = function()
+    return v.nonprog_modes[vim.bo.filetype] ~= nil
 end
 
 
 --------------------------------------------------
 -- LSP
 --------------------------------------------------
-tools.diagnostics_available = function()
+v.diagnostics_available = function()
     local clients = vim.lsp.get_clients({ bufnr = 0 })
     local diagnostics = vim.lsp.protocol.Methods.textDocument_publishDiagnostics
 
@@ -171,7 +280,7 @@ end
 --------------------------------------------------
 -- Highlighting
 --------------------------------------------------
-tools.hl_str = function(hl, str)
+v.hl_str = function(hl, str)
     return "%#" .. hl .. "#" .. str .. "%*"
 end
 
@@ -200,7 +309,7 @@ end
 --- @param hex string hex color
 --- @param percent number
 --- @return string
-tools.tint = function(hex, percent)
+v.tint = function(hex, percent)
     local r, g, b = hex_to_rgb(hex)
 
     -- If any of the colors are missing return "NONE" i.e. no highlight
@@ -220,7 +329,7 @@ end
 ---@param opts table
 ---@param ns_id integer?
 ---@return table
-tools.get_hl_hex = function(opts, ns_id)
+v.get_hl_hex = function(opts, ns_id)
     opts, ns_id = opts or {}, ns_id or 0
     assert(opts.name or opts.id, "Error: must have hl group name or ID!")
     opts.link = true
@@ -236,7 +345,7 @@ end
 -- insert grouping separators in numbers
 -- viml regex: https://stackoverflow.com/a/42911668
 -- lua pattern: stolen from Akinsho
-tools.group_number = function(num, sep)
+v.group_number = function(num, sep)
     if num < 999 then
         return tostring(num)
     else
@@ -248,7 +357,6 @@ end
 --- check if a certain feature/version/commit exists in nvim
 ---@param feature string
 ---@return boolean
-tools.has = function(feature)
+v.has = function(feature)
     return vim.fn.has(feature) > 0
 end
-

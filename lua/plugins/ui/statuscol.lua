@@ -27,7 +27,7 @@ return {
                     },
                     condition = {
                         function()
-                            return tools.diagnostics_available() or '  '
+                            return v.diagnostics_available() or '  '
                         end
                     }
                 },
@@ -75,13 +75,13 @@ return {
                                 local s_row, e_row = pos_list[1][1][2], pos_list[#pos_list][2][2]
 
                                 if args.lnum >= s_row and args.lnum <= e_row then
-                                    return tools.hl_str("CursorLineNr", line)
+                                    return v.hl_str("CursorLineNr", line)
                                 end
                             end
 
                             return vim.fn.line('.') == args.lnum and
-                                tools.hl_str("CursorLineNr", line) or
-                                tools.hl_str("LineNr", line)
+                                v.hl_str("CursorLineNr", line) or
+                                v.hl_str("LineNr", line)
                         end,
                         ' ',
                     }
@@ -95,8 +95,8 @@ return {
                     condition = {
                         require("statuscol.builtin").not_empty
                         -- function()
-                        --     local root = tools.get_path_root(vim.api.nvim_buf_get_name(0))
-                        --     return tools.get_git_remote_name(root) or ' '
+                        --     local root = v.get_path_root(vim.api.nvim_buf_get_name(0))
+                        --     return v.get_git_remote_name(root) or ' '
                         -- end
                     }
                 },

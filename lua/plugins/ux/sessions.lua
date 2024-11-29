@@ -1,5 +1,10 @@
 return {
     "olimorris/persisted.nvim",
+    keys = {
+        { "<localleader>ss", "<cmd>SessionSave<cr>",         desc = "save current session" },
+        { "<localleader>sl", "<cmd>SessionLoad<cr>",         desc = "load current session" },
+        { "<localleader>so", "<cmd>Telescope persisted<cr>", desc = "select a session" },
+    },
     opts = {
         save_dir = os.getenv("HOME") .. "/" .. ".neovim_sessions/",
         autoload = false,
@@ -14,5 +19,9 @@ return {
             "~/Downloads",
             "~/.config"
         }
-    }
+    },
+    config = function(_, opts)
+        require("persisted").setup(opts)
+        require("telescope").load_extension("persisted")
+    end
 }

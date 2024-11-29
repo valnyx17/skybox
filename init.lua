@@ -1,76 +1,76 @@
-vim.loader.enable()
+if vim.loader then vim.loader.enable() end
 
--- bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-    local lazyurl = 'https://github.com/folke/lazy.nvim.git'
-    local out = vim.fn.system({ 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyurl, lazypath })
-    if vim.v.shell_error ~= 0 then
-        vim.api.nvim_echo({
-            { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
-            { out,                            "WarningMsg" },
-            { "\nPress any key to exit..." },
-        }, true, {})
-        vim.fn.getchar()
-        os.exit(1)
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
+
+_G.L = vim.log.levels
+_G.I = vim.inspect
+_G.prequire = function(name)
+    local ok, mod = pcall(require, name)
+    if ok then
+        return mod
+    else
+        vim.notify_once(string.format("Missing module: %s", mod), L.WARN)
+        return nil
     end
 end
-vim.opt.rtp:prepend(lazypath)
 
--- setup leader and local leader before loading lazy.nvim
--- also a good place for options
-require('conf.globals')
-prequire("conf.options")
-prequire('conf.gui')
-prequire('conf.ui')
+require('nyx.globals') -- _G.v namespace
 
--- setup lazy.nvim
-prequire("lazy").setup({
-    spec = {
-        { import = "plugins.ui" },
-        { import = "plugins.dev" },
-        { import = "plugins.ux" },
-        { import = "plugins.mini" },
-        { import = "plugins.snacks" }
-    },
-    install = {
-        colorscheme = { "onenord", "default" },
-    },
-    checker = {
-        enabled = true,
-        notify = false
-    },
-    dev = {
-        path = "~/Documents/code/nvim",
-        patterns = { "valnyx17" },
-        fallback = true,
-    },
-    defaults = {
-        lazy = false,
-        version = false,
-    },
-    performance = {
-        rtp = {
-            -- disable some rtp plugins
-            disabled_plugins = {
-                "gzip",
-                -- "matchit",
-                -- "matchparen",
-                "netrwPlugin",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
-})
+-- inspect the contents of an object very quickly
+-- in your code or from the command-line:
+-- @see: https://www.reddit.com/r/neovim/comments/p84iu2/useful_functions_to_explore_lua_objects/
+-- USAGE:
+-- in lua: P({1, 2, 3})
+-- in commandline: :lua P(vim.loop)
+---@vararg any
+_G.P = function(...)
+    local printables = {}
+    for i = 1, select('#', ...) do
+        local v = select(i, ...)
+        table.insert(printables, vim.inspect(v))
+    end
 
-prequire('conf.autocmds')
+    if prequire('plenary') then
+        local log = prequire('plenary.log').new({
+            plugin = "notify",
+            level = "debug",
+            use_console = true,
+            use_quickfix = false,
+            use_file = false
+        })
+        vim.schedule_wrap(log.info)(vim.inspect(#printables > 1 and printables or unpack(printables)))
+    else
+        vim.schedule_wrap(print)(table.concat(printables, "\n"))
+    end
+    return ...
+end
+_G.dbg = _G.P
+
+function vim.wlog(...)
+    if vim.in_fast_event() then return vim.schedule_wrap(vim.wlog)(...) end
+    local d = debug.getinfo(2)
+    return vim.fn.writefile(
+        vim.fn.split(":" .. d.short_src .. ":" .. d.currentline .. ":\n" .. vim.inspect(#{ ... } > 1 and { ... } or ...),
+            "\n"),
+        "/tmp/nvim.log",
+        "a"
+    )
+end
+
+function vim.wlogclear()
+    vim.fn.writefile({}, "/tmp/nvim.log")
+end
+
+require('nyx.conf')
+require('nyx.ui')
+require('nyx.lazy')
+require('nyx.cmds')
+require('nyx.autocmds')
 
 vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
-        prequire('conf.keybinds')
+        require('nyx.keymaps')
     end
 })
