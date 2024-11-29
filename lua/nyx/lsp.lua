@@ -62,9 +62,9 @@ M.on_attach = function(client, bufnr)
         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
     end
 
-    map('n', "<leader>ld", function()
-        vim.diagnostic.open_float({ border = tools.ui.cur_border, })
-    end, "view [l]sp [d]iagnostic float")
+    map('n', "gl", function()
+        vim.diagnostic.open_float({ border = v.ui.cur_border, })
+    end, "view [l]sp diagnostic float")
 
     if client.supports_method(methods.textDocument_formatting) then
         map('n', "<leader>lf", function() lsp.format({ timeout_ms = 2000 }) end, "[f]ormat with [L]SP")
@@ -72,15 +72,18 @@ M.on_attach = function(client, bufnr)
 
     -- https://github.com/neovim/neovim/commit/448907f65d6709fa234d8366053e33311a01bdb9
     -- https://reddit.com/r/neovim/s/eDfG5BfuxW
-    if client.supports_method(methods.textDocument_inlayHint) then
-        map('n', "<leader>th", function()
-            local hint = vim.lsp.inlay_hint
-            hint.enable(not hint.is_enabled(bufnr))
-        end, "[t]oggle inlay [h]ints")
-    end
+    --if client.supports_method(methods.textDocument_inlayHint) then
+    --     map('n', "<leader>th", function()
+    --         local hint = vim.lsp.inlay_hint
+    --         hint.enable(not hint.is_enabled(bufnr))
+    --     end, "[t]oggle inlay [h]ints")
+    -- end
 
     if client.supports_method(methods.textDocument_rename) then
-        map("n", "<leader>lr", lsp.rename, "[l]sp [r]ename")
+        -- map("n", "<leader>lr", lsp.rename, "[l]sp [r]ename")
+        vim.keymap.set("n", "<leader>lr", function()
+            return ":IncRename " .. vim.fn.expand("<cword>")
+        end, { buffer = bufnr, desc = "[l]sp [r]ename", expr = true })
     end
 
     if client.supports_method(methods.textDocument_definition) then
@@ -88,7 +91,7 @@ M.on_attach = function(client, bufnr)
     end
 
     if client.supports_method(methods.textDocument_references) then
-        map('n', "gr", require("telescope.builtin").lsp_references, "[g]oto [r]eferences")
+        map('n', "gR", require("telescope.builtin").lsp_references, "[g]oto [r]eferences")
     end
 
     if client.supports_method(methods.textDocument_implementation) then
@@ -112,5 +115,13 @@ M.on_attach = function(client, bufnr)
     end
 end
 
+M.icons = {
+    error = "", -- alts: 󰬌      
+    warn = "󰔷", -- alts: 󰬞 󰔷   ▲ 󰔷
+    info = "󰙎", -- alts: 󰖧 󱂈 󰋼  󰙎   󰬐 󰰃     ● 󰬐 
+    hint = "▫", -- alts:  󰬏 󰰀  󰌶 󰰂 󰰂 󰰁 󰫵 󰋢   
+    ok = "✓", -- alts: ✓✓
+    clients = "", -- alts:     󱉓 󱡠 󰾂 
+}
 
 return M

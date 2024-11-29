@@ -30,6 +30,8 @@ autocmds.create({ 'BufEnter', 'BufWritePre' }, {
         vim.fn.matchadd("TdoHint", "\\( TODO:\\)")
         vim.fn.matchadd("NoteHint", "\\( NOTE:\\)")
         vim.fn.matchadd("BugHint", "\\( BUG:\\)")
+        vim.fn.matchadd("BugHint", "\\( [xX]\\{3\\}:\\)")
+        vim.fn.matchadd("BugHint", "\\( FIXME:\\)")
         vim.fn.matchadd("WarnHint", "\\( WARN:\\)")
     end
 })
@@ -37,5 +39,11 @@ autocmds.create({ 'BufEnter', 'BufWritePre' }, {
 autocmds.create("QuickFixCmdPost", {
     callback = function()
         vim.cmd([[Trouble qflist open]])
+    end
+})
+
+autocmds.create("FileType", {
+    callback = function()
+        vim.opt_local.formatoptions:remove({ "o" })
     end
 })

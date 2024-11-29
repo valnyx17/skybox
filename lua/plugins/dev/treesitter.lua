@@ -23,6 +23,13 @@ return {
         end,
     },
     {
+        "Wansmer/treesj",
+        keys = { 'gJ' },
+        config = function()
+            vim.keymap.set("n", "gJ", "<cmd>lua require('treesj').toggle()<cr>", { desc = "treesj join", noremap = true })
+        end,
+    },
+    {
         "danymat/neogen",
         dependencies = "nvim-treesitter/nvim-treesitter",
         opts = {

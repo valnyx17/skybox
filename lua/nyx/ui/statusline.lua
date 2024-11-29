@@ -1,4 +1,4 @@
-local utils = require("conf.ui.utils")
+local utils = require("nyx.ui.utils")
 local get_opt = vim.api.nvim_get_option_value
 
 local M = {}
@@ -20,7 +20,9 @@ local stl_parts = {
 }
 
 local stl_order = {
-    "pad",
+    -- "pad",
+    "mode",
+    -- "pad",
     "path",
     "mod",
     "ro",
@@ -34,7 +36,7 @@ local stl_order = {
     "pad"
 }
 
-local icons = tools.ui.icons
+local icons = v.ui.icons
 
 local ui_icons = {
     ["branch"] = { "DiagnosticOk", icons["branch"] },
@@ -44,8 +46,8 @@ local ui_icons = {
     ["modified"] = { "DiagnosticError", icons["bullet"] },
     ["readonly"] = { "DiagnosticWarn", icons["lock"] },
     ["searchcount"] = { "DiagnosticInfo", icons["location"] },
-    ["error"] = { "DiagnosticError", icons["ballot_x"] },
-    ["warn"] = { "DiagnosticWarn", icons["up_tri"] },
+    ["error"] = { "DiagnosticError", v.lsp.icons["error"] },
+    ["warn"] = { "DiagnosticWarn", v.lsp.icons["warn"] },
 }
 
 --------------------------------------------------
@@ -55,7 +57,7 @@ local function hl_icons(icon_list)
     local hl_syms = {}
 
     for name, list in pairs(icon_list) do
-        hl_syms[name] = tools.hl_str(list[1], list[2])
+        hl_syms[name] = v.hl_str(list[1], list[2])
     end
 
     return hl_syms
@@ -96,7 +98,7 @@ local function get_path_info(root, fname, icon_tbl)
     local file_name = vim.fn.fnamemodify(fname, ":t")
 
     local file_icon, icon_hl = require("mini.icons").get('file', file_name)
-    file_icon = file_name ~= "" and tools.hl_str(icon_hl, file_icon) or ""
+    file_icon = file_name ~= "" and v.hl_str(icon_hl, file_icon) or ""
 
     local file_icon_name = table.concat({ file_icon, " ", file_name })
 
@@ -104,8 +106,8 @@ local function get_path_info(root, fname, icon_tbl)
         return table.concat({ icon_tbl["file"], file_icon_name })
     end
 
-    local remote = tools.get_git_remote_name(root)
-    local branch = tools.get_git_branch(root)
+    local remote = v.get_git_remote_name(root)
+    local branch = v.get_git_branch(root)
     local dir_path = vim.fn.fnamemodify(fname, ":h") .. "/"
     local win_width = vim.api.nvim_win_get_width(0)
     local dir_threshold_width = 15
@@ -133,7 +135,8 @@ local function get_path_info(root, fname, icon_tbl)
         repo_info,
         icon_tbl["file"],
         dir_path,
-        file_icon_name
+        -- file_icon_name
+        file_name
     })
 end
 
@@ -142,7 +145,7 @@ end
 --- Create a string of diagnostic information
 --- @return string available diagnostics
 local function get_diag_str()
-    if not tools.diagnostics_available() then
+    if not v.diagnostics_available() then
         return ""
     end
 
@@ -177,7 +180,7 @@ local function get_vlinecount_str()
     local raw_count = vim.fn.line('.') - vim.fn.line('v')
     raw_count = raw_count < 0 and raw_count - 1 or raw_count + 1
 
-    return tools.group_number(math.abs(raw_count), ',')
+    return v.group_number(math.abs(raw_count), ',')
 end
 
 local function is_user_typing_search()
@@ -191,8 +194,8 @@ local function get_fileinfo_widget(icon_tbl)
     if vim.v.hlsearch == 1 and not is_user_typing_search() then
         local sinfo = vim.fn.searchcount()
         local search_stat = sinfo.incomplete > 0 and 'press enter'
-        or sinfo.total > 0 and ('%s/%s'):format(sinfo.current, sinfo.total)
-        or nil
+            or sinfo.total > 0 and ('%s/%s'):format(sinfo.current, sinfo.total)
+            or nil
 
         if search_stat ~= nil then
             return table.concat({ icon_tbl.searchcount, ' ', search_stat, ' ' })
@@ -200,10 +203,10 @@ local function get_fileinfo_widget(icon_tbl)
     end
 
     local ft = get_opt("filetype", {})
-    local lines = tools.group_number(vim.api.nvim_buf_line_count(0), ',')
+    local lines = v.group_number(vim.api.nvim_buf_line_count(0), ',')
 
     -- For source code: return icon and line count
-    if not tools.nonprog_modes[ft] then
+    if not v.nonprog_modes[ft] then
         return table.concat({ icon_tbl.fileinfo, " ", lines, " lines" })
     end
 
@@ -217,19 +220,19 @@ local function get_fileinfo_widget(icon_tbl)
             '  ',
             lines,
             " lines  ",
-            tools.group_number(wc_table.words, ','),
+            v.group_number(wc_table.words, ','),
             " words "
         })
     else
         -- Visual selection mode: line count, word count, and char count
         return table.concat({
-            tools.hl_str("DiagnosticInfo", '‹›'),
+            v.hl_str("DiagnosticInfo", '‹›'),
             ' ',
             get_vlinecount_str(),
             " lines  ",
-            tools.group_number(wc_table.visual_words, ','),
+            v.group_number(wc_table.visual_words, ','),
             " words  ",
-            tools.group_number(wc_table.visual_chars, ','),
+            v.group_number(wc_table.visual_chars, ','),
             " chars"
         })
     end
@@ -276,9 +279,41 @@ local function get_scrollbar()
     local i = math.floor((cur_line - 1) / lines * #sbar_chars) + 1
     local sbar = string.rep(sbar_chars[i], 2)
 
-    return tools.hl_str("Substitute", sbar)
+    return v.hl_str("InfoFloat", sbar)
 end
 
+local function get_mode()
+    local mode = vim.api.nvim_get_mode().mode
+    local mode_map = {
+        n = "NORMAL",
+        i = "INSERT",
+        c = "COMMAND",
+        v = "VISUAL",
+        V = "VISUAL",
+        [''] = "VBLOCK",
+        R = "REPLACE",
+        S = "S-LINE",
+        s = "SELECT",
+        [''] = "S-BLOCK",
+        -- term
+        t = "TERMINAL",
+    }
+    local mode_hl = {
+        n = "TSNote",
+        i = "TSWarning",
+        c = "TSDanger",
+        v = "TSTodo",
+        V = "TSTodo",
+        [''] = "TSWarning",
+        R = "TSDanger",
+        s = "TSWarning",
+        S = "TSWarning",
+        [''] = "TSWarning",
+        t = "TSDanger",
+    }
+    local mode_str = v.hl_str(mode_hl[mode], " " .. mode_map[mode] .. " ")
+    return mode_str
+end
 
 --- Creates statusline
 --- @return string statusline text to be displayed
@@ -290,7 +325,7 @@ M.render = function()
         vim.bo.buftype == "prompt" then
         fname = vim.bo.ft
     else
-        root = tools.get_path_root(fname)
+        root = v.get_path_root(fname)
     end
 
     local buf_num = vim.api.nvim_win_get_buf(vim.g.statusline_winid)
@@ -312,6 +347,8 @@ M.render = function()
         stl_parts["venv"] = get_py_venv()
     end
 
+    stl_parts["mode"] = get_mode()
+
     -- right
     stl_parts["diag"] = get_diag_str()
     stl_parts["fileinfo"] = get_fileinfo_widget(hl_ui_icons)
@@ -322,6 +359,6 @@ M.render = function()
 end
 
 
-vim.o.statusline = "%!v:lua.require('conf.ui.statusline').render()"
+vim.o.statusline = "%!v:lua.require('nyx.ui.statusline').render()"
 
 return M

@@ -16,7 +16,7 @@ return {
                 }
             },
             dashboard = {
-                enabled = true,
+                enabled = false,
                 preset = {
                     ---@type snacks.dashboard.Item[]
                     keys = {
@@ -30,10 +30,10 @@ return {
                         { icon = " ", key = "q", desc = "Quit", action = ":qa" },
                     },
                     header = [[
-███╗   ██╗██╗   ██╗ █████╗ ██╗     
-████╗  ██║██║   ██║██╔══██╗██║     
-██╔██╗ ██║██║   ██║███████║██║     
-██║╚██╗██║╚██╗ ██╔╝██╔══██║██║     
+███╗   ██╗██╗   ██╗ █████╗ ██╗
+████╗  ██║██║   ██║██╔══██╗██║
+██╔██╗ ██║██║   ██║███████║██║
+██║╚██╗██║╚██╗ ██╔╝██╔══██║██║
 ██║ ╚████║ ╚████╔╝ ██║  ██║███████╗
 ╚═╝  ╚═══╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝]]
                 },
@@ -46,9 +46,9 @@ return {
                         height = 5,
                         padding = 1
                     },
-                    { section = "keys",  gap = 1,                       padding = 1 },
-                    { pane = "2",        icon = tools.ui.icons.file,    title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
-                    { pane = "2",        icon = tools.ui.icons.diamond, title = "Projects",     section = "projects",     indent = 2, padding = 1 },
+                    { section = "keys",  gap = 1,                   padding = 1 },
+                    { pane = "2",        icon = v.ui.icons.file,    title = "Recent Files", section = "recent_files", indent = 2, padding = 1 },
+                    { pane = "2",        icon = v.ui.icons.diamond, title = "Projects",     section = "projects",     indent = 2, padding = 1 },
                     {
                         pane = 2,
                         icon = " ",
@@ -84,7 +84,7 @@ return {
         vim.keymap.set("n", "<leader>lf", function() Snacks.lazygit.log_file() end,
             { desc = "Lazygit Current File History" })
         vim.keymap.set("n", "<leader>gl", function() Snacks.lazygit.log() end, { desc = "Lazygit Log (cwd)" })
-        vim.keymap.set("n", "<leader>cr", function() Snacks.rename() end, { desc = "Rename File" })
+        -- vim.keymap.set("n", "<leader>cr", function() Snacks.rename() end, { desc = "Rename File" })
         vim.keymap.set({ "n", "t" }, "<c-,>", function() Snacks.terminal.toggle() end, { desc = "Toggle Terminal" })
         vim.keymap.set({ "n", "t" }, "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Next Reference" })
         vim.keymap.set({ "n", "t" }, "[[", function() Snacks.words.jump(-vim.v.count1) end, { desc = "Prev Reference" })

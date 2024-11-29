@@ -18,6 +18,7 @@ return {
             indent = {
                 padding = 0,
                 with_expanders = false,
+                with_markers = false,
             },
             icon = {
                 -- folder_closed = "",
@@ -42,15 +43,15 @@ return {
             git_status = {
                 symbols = {
                     -- added = "",
-                    added = "",
-                    deleted = "",
+                    added = v.ui.git.icons.add,
+                    deleted = v.ui.git.icons.remove,
                     -- modified = "",
-                    modified = "",
-                    renamed = "➜",
-                    untracked = "*",
-                    ignored = "◌",
-                    unstaged = "✗",
-                    staged = "✓",
+                    modified = v.ui.git.icons.mod,
+                    renamed = v.ui.git.icons.rename,
+                    untracked = "",
+                    ignored = "",
+                    unstaged = v.ui.git.icons.unstaged,
+                    staged = "",
                     conflict = "",
                 },
             },
@@ -84,9 +85,9 @@ return {
         },
         filesystem = {
             filtered_items = {
-                visible = false,
-                hide_dotfiles = true,
-                hide_gitignored = false,
+                visible = true,
+                hide_dotfiles = false,
+                hide_gitignored = true,
                 hide_by_name = {
                     ".DS_Store",
                     "thumbs.db",

@@ -27,12 +27,12 @@ return {
                 opts = {
                     max_concurrent_installers = 20,
                     ui = {
-                        border = tools.ui.cur_border,
+                        border = v.ui.cur_border,
                         height = 0.8,
                         icons = {
-                            package_installed = tools.ui.icons.bullet,
-                            package_pending = tools.ui.icons.ellipses,
-                            package_uninstalled = tools.ui.icons.o_bullet,
+                            package_installed = v.ui.icons.bullet,
+                            package_pending = v.ui.icons.ellipses,
+                            package_uninstalled = v.ui.icons.o_bullet,
                         },
                     },
                     keymaps = {
@@ -83,15 +83,15 @@ return {
                         return setup_tbl
                     end
 
-                    local lsp = require('conf.lsp')
+                    local lsp = require('nyx.lsp')
                     require("mason-lspconfig").setup_handlers(populate_setup(lsp.servers, lsp.on_attach))
                 end
             },
         },
         config = function()
-            require("lspconfig.ui.windows").default_options.border = tools.ui.cur_border
+            require("lspconfig.ui.windows").default_options.border = v.ui.cur_border
             vim.api.nvim_set_hl(0, "LspInfoBorder", { link = "FloatBorder" })
-            local lsp = require('conf.lsp')
+            local lsp = require('nyx.lsp')
             require("lspconfig")["nixd"].setup({
                 on_attach = lsp.on_attach,
                 hints = {
@@ -147,7 +147,7 @@ return {
             },
             notification = {
                 window = {
-                    border = tools.ui.cur_border,
+                    border = v.ui.cur_border,
                     border_hl = "NonText",
                     normal_hl = "NonText",
                     winblend = 0,

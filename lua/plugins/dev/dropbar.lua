@@ -19,7 +19,7 @@ return {
             end
         },
         icons = {
-            ui = { bar = { separator = ' ' .. tools.ui.icons.r_chev .. ' ' } },
+            ui = { bar = { separator = ' ' .. v.ui.icons.r_chev .. ' ' } },
         }
     }
 }
