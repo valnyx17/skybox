@@ -9,7 +9,7 @@ return {
         })
 
         prequire('mini.move').setup()
-        prequire('mini.align').setup()
+        -- prequire('mini.align').setup()
 
         prequire('mini.basics').setup({
             options = {
@@ -18,6 +18,9 @@ return {
             mappings = {
                 basic = false,
                 move_with_alt = true
+            },
+            autocommands = {
+                basic = true,
             }
         })
 
@@ -50,35 +53,5 @@ return {
         })
 
         prequire('mini.bracketed').setup()
-
-
-        local MiniSplitjoin = prequire('mini.splitjoin')
-
-        local pairs = {
-            '%b()',
-            '%b<>',
-            '%b[]',
-            '%b{}',
-        }
-
-        MiniSplitjoin.setup({
-            detect = {
-                brackets = pairs,
-                separator = '[,;]',
-                exclude_regions = {},
-            },
-            mappings = {
-                toggle = 'gS',
-            },
-        })
-
-        local gen_hook = MiniSplitjoin.gen_hook
-        local hook_pairs = { brackets = pairs }
-        local add_pair_commas = gen_hook.add_trailing_separator(hook_pairs)
-        local del_pair_commas = gen_hook.del_trailing_separator(hook_pairs)
-        vim.b.minisplitjoin_config = {
-            split = { hooks_post = { add_pair_commas } },
-            join  = { hooks_post = { del_pair_commas } },
-        }
     end
 }
