@@ -24,6 +24,7 @@ return {
     },
     {
         "Wansmer/treesj",
+        event = "BufEnter",
         keys = { 'gJ' },
         config = function()
             vim.keymap.set("n", "gJ", "<cmd>lua require('treesj').toggle()<cr>", { desc = "treesj join", noremap = true })
@@ -31,6 +32,7 @@ return {
     },
     {
         "danymat/neogen",
+        event = "BufEnter",
         dependencies = "nvim-treesitter/nvim-treesitter",
         opts = {
             languages = {
@@ -55,6 +57,7 @@ return {
     -- Treesitter context
     {
         "nvim-treesitter/nvim-treesitter-context",
+        event = "BufEnter",
         opts = { mode = "cursor", max_lines = 2 },
     },
 

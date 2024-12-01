@@ -22,6 +22,7 @@ local caps = vim.tbl_deep_extend(
 return {
     {
         "neovim/nvim-lspconfig",
+        event = "BufEnter",
         dependencies = {
             {
                 "williamboman/mason.nvim",
@@ -134,6 +135,7 @@ return {
     },
     {
         "j-hui/fidget.nvim",
+        event = "LspAttach",
         opts = {
             progress = {
                 suppress_on_insert = true,
