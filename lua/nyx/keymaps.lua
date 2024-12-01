@@ -58,6 +58,15 @@ keymap.setn("<leader>ec", [[:%s/\s\+$//e<cr>]], { desc = "remove trailing spaces
 keymap.setn("x", '"_dl')
 keymap.setn("X", '"_dh')
 
+keymap.setn("<C-d>", "<C-d>zz")
+keymap.setn("<C-u>", "<C-u>zz")
+keymap.setn("n", "nzz")
+keymap.setn("N", "Nzz")
+keymap.setn("*", "*zz")
+keymap.setn("#", "#zz")
+keymap.setn("g*", "g*zz")
+keymap.setn("g#", "g#zz")
+
 keymap.setn("YY", "va{Vy")
 
 keymap.setn("<C-M-h>", ":vert resize +2<CR>")
