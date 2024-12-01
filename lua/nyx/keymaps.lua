@@ -40,6 +40,9 @@ keymap.setn("<C-j>", "<cmd>NvimTmuxNavigateDown<CR>", { desc = "Navigate Down" }
 keymap.setn("<C-k>", "<cmd>NvimTmuxNavigateUp<CR>", { desc = "Navigate Up" })
 keymap.setn("<C-l>", "<cmd>NvimTmuxNavigateRight<CR>", { desc = "Navigate Right" })
 
+keymap.setn("j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+keymap.setn("k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+
 keymap.setn("<leader>fs", "<cmd>w<CR>", { desc = "write file" })
 keymap.setn("<leader>fS", "<cmd>w!<CR>", { desc = "write file (force)" })
 keymap.setn("<leader>fq", "<cmd>q<CR>", { desc = "quit file" })
