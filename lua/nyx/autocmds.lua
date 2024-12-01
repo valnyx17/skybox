@@ -36,12 +36,6 @@ autocmds.create({ 'BufEnter', 'BufWritePre' }, {
     end
 })
 
-autocmds.create("QuickFixCmdPost", {
-    callback = function()
-        vim.cmd([[Trouble qflist open]])
-    end
-})
-
 autocmds.create("FileType", {
     callback = function()
         vim.opt_local.formatoptions:remove({ "o" })
