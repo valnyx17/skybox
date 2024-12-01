@@ -1,6 +1,7 @@
 return {
     "saghen/blink.cmp",
-    version = "v0.5.1",
+    enabled = false,
+    version = "0.*",
     dependencies = {
         {
             "folke/lazydev.nvim",
@@ -12,14 +13,34 @@ return {
                     { path = "luvit-meta/library", words = { "vim%.uv" } }
                 }
             }
-        }
+        },
+        {
+            "L3MON4D3/LuaSnip",
+            dependencies = {
+                {
+                    "rafamadriz/friendly-snippets",
+                    config = function()
+                        require("luasnip.loaders.from_vscode").lazy_load()
+                    end
+                }
+            },
+            opts = {
+                history = true,
+                delete_check_events = "TextChanged",
+            },
+            config = function(_, opts)
+                require('luasnip').setup(opts)
+                require("luasnip.loaders.from_lua").load({
+                    paths = {
+                        vim.fn.stdpath('config') .. "/snippets"
+                    }
+                })
+            end
+        },
+        { "saghen/blink.compat", version = "*", opts = { impersonate_nvim_cmp = true } },
+        "saadparwaiz1/cmp_luasnip"
     },
     opts = {
-        fuzzy = {
-            prebuilt_binaries = {
-                force_version = "v0.5.1"
-            }
-        },
         keymap = {
             ["<M-c>"] = { "show", "show_documentation", "hide_documentation" },
             ["<C-e>"] = { "hide" },
@@ -55,47 +76,19 @@ return {
                 max_height = 30,
                 scrollbar = true,
                 border = v.ui.borders.empty,
-                selection = "manual",
-                draw = function(ctx)
-                    local icon = ctx.kind_icon
-                    local icon_hl = vim.api.nvim_get_hl(0, {
-                        name = "BlinkCmpKind" .. ctx.kind
-                    }) and "BlinkCmpKind" .. ctx.kind or "BlinkCmpKind"
-
-                    -- local source, client = ctx.item.source_id, ctx.item.client_id
-                    -- if client and vim.lsp.get_client_by_id(client).name then
-                    --     source = vim.lsp.get_client_by_id(client)
-                    --         .name
-                    -- end
-
-                    return {
-                        {
-                            icon .. ctx.icon_gap .. string.lower(ctx.kind) .. " ",
-                            fill = true,
-                            hl_group = icon_hl,
-                            max_width = 25,
-                        },
-                        {
-                            " " .. ctx.item.label .. " ",
-                            fill = true,
-                            hl_group = ctx.deprecated and "BlinkCmpLabelDeprecated" or "BlinkCmpLabel",
-                            max_width = 35,
-                        },
-                        -- {
-                        --     " <" .. string.lower(source) .. "> ",
-                        --     fill = true,
-                        --     hl_group = ctx.deprecated and "BlinkCmpLabelDeprecated" or "CmpItemMenu",
-                        --     max_width = 15,
-                        -- }
-                    }
-                end
             }
         },
         kind_icons = v.ui.icons.vscode,
         nerd_font_variant = "mono",
         sources = {
             completion = {
-                enabled_providers = { "lsp", "path", "snippets", "buffer", "lazydev" }
+                enabled_providers = {
+                    "lsp",
+                    "path",
+                    "luasnip",
+                    "buffer",
+                    "lazydev",
+                }
             },
             providers = {
                 lsp = {
@@ -105,8 +98,30 @@ return {
                 lazydev = {
                     name = "LazyDev",
                     module = "lazydev.integrations.blink"
+                },
+                luasnip = {
+                    name = "luasnip",
+                    -- module = "blink_luasnip",
+                    module = "blink.compat.source",
+
+                    score_offset = -3,
+
+                    opts = {
+                        use_show_condition = false, -- disable filtering completion candidates
+                        show_autosnippets = true
+                    }
                 }
             }
+        },
+        snippets = {
+            expand = function(snippet) require('luasnip').lsp_expand(snippet) end,
+            active = function(filter)
+                if filter and filter.direction then
+                    return require('luasnip').jumpable(filter.direction)
+                end
+                return require('luasnip').in_snippet()
+            end,
+            jump = function(direction) require('luasnip').jump(direction) end,
         }
-    }
+    },
 }
