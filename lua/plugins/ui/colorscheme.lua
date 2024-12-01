@@ -52,8 +52,17 @@ return {
                 EdgyNormal = { bg = "${bg}" },
                 EdgyTitle = { fg = "${purple}", bold = true },
 
-                NormalFloat = { bg = "${bg}" }, -- Set the terminal background to be the same as the editor
-                FloatBorder = { fg = "${gray}", bg = "${bg}" },
+                StatusNormal = { bg = "${green}", fg = "${bg}" },
+                StatusNormalO = { bg = "${bg}", fg = "${green}" },
+                StatusInsert = { bg = "${blue}", fg = "${bg}" },
+                StatusVisual = { bg = "${purple}", fg = "${bg}" },
+                StatusCommand = { bg = "${white}", fg = "${bg}" },
+                StatusTerminal = { bg = "${white}", fg = "${bg}" },
+                StatusReplace = { bg = "${red}", fg = "${bg}" },
+
+                -- NormalFloat = { bg = "${bg}" }, -- Set the terminal background to be the same as the editor
+                -- FloatBorder = { fg = "${gray}", bg = "${bg}" },
+                -- FloatBorder = { bg = "${gray}", fg = "${bg}" },
 
                 CursorLineNr = { bg = "${bg}", fg = "${fg}", italic = true },
                 DiffChange = { underline = true }, -- diff mode: Changed line |diff.txt|

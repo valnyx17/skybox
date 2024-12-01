@@ -279,39 +279,52 @@ local function get_scrollbar()
     local i = math.floor((cur_line - 1) / lines * #sbar_chars) + 1
     local sbar = string.rep(sbar_chars[i], 2)
 
-    return v.hl_str("InfoFloat", sbar)
+    return v.hl_str("StatusScrollbar", sbar)
 end
 
 local function get_mode()
     local mode = vim.api.nvim_get_mode().mode
     local mode_map = {
-        n = "NORMAL",
-        i = "INSERT",
-        c = "COMMAND",
-        v = "VISUAL",
-        V = "VISUAL",
-        [''] = "VBLOCK",
-        R = "REPLACE",
-        S = "S-LINE",
-        s = "SELECT",
-        [''] = "S-BLOCK",
-        -- term
-        t = "TERMINAL",
+        n = "RW",
+        no = "RO",
+        i = "**",
+        ic = "**",
+        c = "VIEX",
+        cv = "VIEX",
+        ce = "EX",
+        v = "**",
+        V = "**",
+        [''] = "**",
+        R = "RA",
+        Rv = "RV",
+        r = "r",
+        rm = "r",
+        ['r?'] = "r",
+        ["!"] = "!",
+        s = "S",
+        S = "SL",
+        [''] = "SB",
+        nt = ">_",
+        t = ">_",
     }
     local mode_hl = {
-        n = "TSNote",
-        i = "TSWarning",
-        c = "TSDanger",
-        v = "TSTodo",
-        V = "TSTodo",
-        [''] = "TSWarning",
-        R = "TSDanger",
-        s = "TSWarning",
-        S = "TSWarning",
-        [''] = "TSWarning",
-        t = "TSDanger",
+        n = "StatusNormal",
+        no = "StatusNormalO",
+        i = "StatusInsert",
+        ic = "StatusInsert",
+        c = "StatusCommand",
+        v = "StatusVisual",
+        V = "StatusVisual",
+        [''] = "StatusVisual",
+        R = "StatusReplace",
+        s = "Normal",
+        S = "Normal",
+        [''] = "Normal",
+        nt = "StatusNormal",
+        t = "StatusTerminal",
     }
     local mode_str = v.hl_str(mode_hl[mode], " " .. mode_map[mode] .. " ")
+    -- local mode_str = v.hl_str("Normal", " " .. mode .. " ")
     return mode_str
 end
 
