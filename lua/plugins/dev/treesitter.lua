@@ -50,7 +50,7 @@ return {
         },
         config = function(_, opts)
             prequire("neogen").setup(opts)
-            vim.keymap.set("n", "<leader>id", require('neogen').generate, { desc = "neogen generate" })
+            vim.keymap.set("n", "<leader>id", require('neogen').generate, { desc = "[i]nsert [d]ocumentation (neogen)" })
         end,
     },
 

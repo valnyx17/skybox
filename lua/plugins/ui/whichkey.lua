@@ -69,6 +69,8 @@ return {
                 group = "lsp",
             },
             { "<leader>g",      group = "git", },
+            { "<localleader>g", group = "go", },
+            { "<leader>i",      group = "insert", },
             { "<leader>h",      group = "hunk", },
             { "<leader>b",      group = "buffer", },
             { "<leader>s",      group = "splits", },

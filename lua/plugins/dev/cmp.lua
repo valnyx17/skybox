@@ -17,7 +17,8 @@ return {
             opts = {
                 library = {
                     "lazy.nvim",
-                    { path = "luvit-meta/library", words = { "vim%.uv" } }
+                    { path = "luvit-meta/library",                       words = { "vim%.uv" } },
+                    { path = "/run/current-system/sw/share/awesome/lib", mods = { "awful", "beautiful", "gears", "menubar", "naughty", "wibox", "awesome" } }
                 }
             }
         },
@@ -61,19 +62,19 @@ return {
         local luasnip = require("luasnip")
 
         local sources = {
-            { name = "nvim_lsp",                group_index = 1, priority = 500 },
-            { name = 'nvim_lsp_signature_help', group_index = 1, priority = 500 },
+            { name = "nvim_lsp",                priority = 500 },
+            { name = 'nvim_lsp_signature_help', priority = 500 },
             { name = "luasnip",                 priority = 1000 },
-            { name = "lazydev",                 group_index = 1, priority = 1000 },
-            { name = "buffer",                  group_index = 2, priority = 1000 },
-            { name = "async_path",              group_index = 2, priority = 300 },
-            { name = "rg",                      group_index = 2, keyword_length = 3, priority = 400 },
+            { name = "lazydev",                 priority = 1000 },
+            { name = "async_path",              priority = 400 },
+            { name = "buffer",                  priority = 1000, max_item_count = 5 },
+            { name = "rg",                      priority = 300,  max_item_count = 5 },
         }
 
         local winhighlight = table.concat({
             "Normal:NormalFloat",
             "FloatBorder:FloatBorder",
-            "CursorLine:Visual",
+            "CursorLine:PmenuMatchSel",
             "Search:None",
         }, ",")
 
@@ -83,7 +84,7 @@ return {
                     luasnip.lsp_expand(args.body)
                 end,
             },
-            preselect = cmp.PreselectMode.None,
+            -- preselect = cmp.PreselectMode.None,
             performance = {
                 debounce = 0,
                 throttle = 0,
@@ -244,14 +245,18 @@ return {
                 end),
                 -- TODO: Show/Hide documentation.
                 ['<M-c>'] = cmp.mapping.complete {},
-                ['<M-l>'] = cmp.mapping(function()
+                ['<M-l>'] = cmp.mapping(function(fallback)
                     if luasnip.expand_or_locally_jumpable() then
                         luasnip.expand_or_jump()
+                    else
+                        fallback()
                     end
                 end, { 'i', 's' }),
-                ['<M-h>'] = cmp.mapping(function()
+                ['<M-h>'] = cmp.mapping(function(fallback)
                     if luasnip.locally_jumpable(-1) then
                         luasnip.jump(-1)
+                    else
+                        fallback()
                     end
                 end, { 'i', 's' }),
             }

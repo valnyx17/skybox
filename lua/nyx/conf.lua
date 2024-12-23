@@ -22,6 +22,7 @@ local conf = {
     },
     opt = {
         cmdheight = 1,
+        iskeyword = vim.opt.iskeyword - { ".", "_", "$" },
         showtabline = 1,
         laststatus = 3,
         -- line numbers
@@ -97,7 +98,7 @@ local conf = {
             "linematch:60",
         },
         -- ui stuff
-        cursorline = false,
+        cursorline = true,
         foldlevel = 99,
         foldlevelstart = 99,
         foldmethod = "expr",

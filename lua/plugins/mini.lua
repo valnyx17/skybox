@@ -11,6 +11,22 @@ return {
         prequire('mini.move').setup()
         -- prequire('mini.align').setup()
 
+        prequire('mini.jump').setup({
+            mappings = {
+                forward = 'f',
+                backward = 'F',
+                forward_till = 't',
+                backward_till = 'T',
+                repeat_jump = ';',
+            },
+            delay = {
+                highlight = 100,
+                idle_stop = 10000000000000
+            }
+        })
+
+        prequire('mini.jump2d').setup()
+
         prequire('mini.basics').setup({
             options = {
                 basic = false
@@ -22,6 +38,17 @@ return {
             autocommands = {
                 basic = true,
             }
+        })
+
+        prequire('mini.files').setup({})
+        vim.keymap.set("n", "<leader>fe", function()
+            if require('mini.files').get_explorer_state() ~= nil then
+                require('mini.files').close()
+                return
+            end
+            require('mini.files').open()
+        end, {
+            desc = "open mini.files",
         })
 
         prequire('mini.comment').setup()

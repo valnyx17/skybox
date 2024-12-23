@@ -283,11 +283,26 @@ return {
                 },
             },
             templates = {
-                folder = "Template",
+                folder = "templates",
                 date_format = "%Y-%m-%d-%a",
                 time_format = "%H:%M",
             },
             ui = { enable = false },
-        }
+            node_id_func = function(title)
+                local suffix = ""
+                if title ~= nil then
+                    suffix = title:gsub(" ", "-"):gsub("[^A-Za-z0-9-]", ""):lower()
+                else
+                    for _ = 1, 4 do
+                        suffix = suffix .. string.char(math.random(65, 90))
+                    end
+                end
+                return tostring(os.time()) .. "-" .. suffix
+            end
+        },
+        config = function(_, opts)
+            require("obsidian").setup(opts)
+            vim.keymap.set("n", "<localleader>on", "<cmd>ObsidianNew<CR>")
+        end
     }
 }

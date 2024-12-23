@@ -1,3 +1,48 @@
+---@param buf? number
+local function is_format_enabled(buf)
+    buf = (buf == nil or buf == 0) and vim.api.nvim_get_current_buf() or buf
+    local gaf = vim.g.disable_autoformat
+    local baf = vim.b[buf].disable_autoformat
+
+    -- if the buffer has a local value, use that
+    if baf ~= nil then
+        return not baf
+    end
+
+    -- otherwise use the global value if set, otherwise true by default
+    return gaf == nil or not gaf
+end
+
+---@param  enable? boolean
+---@param  buf? boolean
+local function set_formatting(enable, buf)
+    if enable == nil then
+        enable = true
+    end
+    if buf then
+        vim.b.disable_autoformat = not enable
+    else
+        vim.g.disable_autoformat = not enable
+        vim.b.disable_autoformat = nil
+    end
+end
+
+---@param buf? boolean
+local function format_snacks_toggle(buf)
+    return Snacks.toggle({
+        name = "Autoformat (" .. (buf and "buffer" or "global") .. ")",
+        get = function()
+            if not buf then
+                return vim.g.disable_autoformat == nil or not vim.g.autoformat
+            end
+            return is_format_enabled()
+        end,
+        set = function(state)
+            set_formatting(state, buf)
+        end
+    })
+end
+
 return {
     "folke/snacks.nvim",
     config = function()
@@ -102,6 +147,10 @@ return {
             Snacks.terminal(nil, { win = { position = "bottom" } })
         end, { silent = true, desc = "[T]erminal [H]orizontal" })
 
+        vim.keymap.set({ "n", "t" }, "<leader>.", function()
+            Snacks.scratch()
+        end, { silent = true, desc = "Toggle Scratch Buffer" })
+
         vim.keymap.set("n", "<leader>N", function()
             Snacks.win({
                 file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
@@ -126,6 +175,9 @@ return {
 
         -- Create some toggle mappings
         Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+        format_snacks_toggle():map("<leader>uf")
+        format_snacks_toggle(true):map("<leader>uF")
+        Snacks.toggle.option("autoformat", { name = "Autoformat" }):map("<leader>ua")
         Snacks.toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
         Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>uL")
         Snacks.toggle.diagnostics():map("<leader>ud")

@@ -36,6 +36,8 @@ return {
             markdown = { "prettier" },
             toml = { "taplo" },
             sql = { "sql_formatter" },
+            go = { "gofmt" },
+            nix = { "alejandra" }
         },
 
         format_on_save = function(bufnr)

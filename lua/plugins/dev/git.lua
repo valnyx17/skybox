@@ -123,7 +123,7 @@ return {
             "GitBlameCopySHA",
         },
         keys = {
-            { "<localleader>gB", "<Cmd>GitBlameOpenCommitURL<CR>", desc = "git blame: open commit url", mode = "n" },
+            { "<leader>gC", "<Cmd>GitBlameOpenCommitURL<CR>", desc = "git blame: open commit url", mode = "n" },
         },
         init = function() vim.g.gitblame_enabled = 0 end,
     }
