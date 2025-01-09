@@ -34,7 +34,7 @@ return {
                     ft_icon and { ft_icon, guifg = ft_color } or '',
                     { " " },
                     { filename, gui = modified and 'bold,italic' or 'None', guifg = '#c5c9c5' },
-                    guibg = require('sky.ui.utils').colors.theme.ui.bg
+                    guibg = require('sky.ui.utils').colors.mantle
                 }
             end,
         }

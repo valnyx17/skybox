@@ -42,19 +42,19 @@ local Mode = {
             t = "T",
         },
         mode_colors = {
-            n = utils.colors.palette.dragonRed,
-            i = utils.colors.palette.dragonGreen,
-            v = utils.colors.palette.dragonAqua,
-            V = utils.colors.palette.dragonAqua,
-            ["\22"] = utils.colors.palette.dragonAqua,
-            c = utils.colors.palette.dragonOrange,
-            s = utils.colors.palette.dragonViolet,
-            S = utils.colors.palette.dragonViolet,
-            ["\19"] = utils.colors.palette.dragonViolet,
-            R = utils.colors.palette.dragonOrange,
-            r = utils.colors.palette.dragonOrange,
-            ["!"] = utils.colors.palette.dragonRed,
-            t = utils.colors.palette.dragonRed,
+            n = utils.colors.red,
+            i = utils.colors.green,
+            v = utils.colors.aqua,
+            V = utils.colors.aqua,
+            ["\22"] = utils.colors.aqua,
+            c = utils.colors.orange,
+            s = utils.colors.purple,
+            S = utils.colors.purple,
+            ["\19"] = utils.colors.purple,
+            R = utils.colors.orange,
+            r = utils.colors.orange,
+            ["!"] = utils.colors.red,
+            t = utils.colors.red,
         },
     },
     -- We can now access the value of mode() that, by now, would have been
@@ -66,7 +66,7 @@ local Mode = {
     -- characters long.
     provider = function(self)
         local mode = self.mode_names[self.mode]
-        return "%2.4(" .. mode .. "%) "
+        return "%( " .. mode .. " %)"
     end,
     hl = function(self)
         local mode = self.mode:sub(1, 1) -- get only get first mode character
@@ -74,7 +74,7 @@ local Mode = {
             bg = self.mode_colors[mode],
             -- bg = utils.colors.palette.dragonWhite,
             -- fg = utils.colors.theme.ui.bg,
-            fg = utils.colors.palette.dragonBlack4,
+            fg = utils.colors.crust,
             -- bg = utils.colors.theme.ui.fg,
             bold = true,
         }
@@ -121,9 +121,9 @@ local FileName = {
     -- },
     hl = function()
         if utils.lsp_attached() then
-            return { fg = utils.colors.palette.dragonGreen, bold = true }
+            return { fg = utils.colors.green, bold = true }
         else
-            return { fg = utils.colors.palette.dragonBlack6 }
+            return { fg = utils.colors.softbase }
         end
     end
 }
@@ -136,7 +136,7 @@ local HelpFileName = {
         local filename = vim.api.nvim_buf_get_name(0)
         return vim.fn.fnamemodify(filename, ":t")
     end,
-    hl = { fg = utils.colors.palette.dragonBlack6 },
+    hl = { fg = utils.colors.base },
 }
 
 local OilFileName = {
@@ -147,7 +147,7 @@ local OilFileName = {
         return require("oil").get_current_dir()
     end,
     hl = {
-        fg = utils.colors.palette.dragonBlack6,
+        fg = utils.colors.base,
     },
 }
 
@@ -164,12 +164,12 @@ local MacroRec = {
     condition = function()
         return vim.fn.reg_recording() ~= "" and vim.o.cmdheight == 0
     end,
-    hl = { fg = utils.colors.palette.dragonBlack5 },
+    hl = { fg = utils.colors.base },
     utils.fn.surround({ "[", "] " }, nil, {
         provider = function()
             return vim.fn.reg_recording()
         end,
-        hl = { fg = utils.colors.palette.dragonGreen2, bold = true },
+        hl = { fg = utils.colors.green, bold = true },
     }),
     update = {
         "RecordingEnter",
@@ -185,7 +185,7 @@ local FileSaved = {
     end,
     provider = "* ",
     hl = {
-        fg = utils.colors.palette.dragonGray,
+        fg = utils.colors.softbase,
         bold = true,
     },
 }
@@ -223,11 +223,11 @@ local FileType = {
     end,
     hl = function()
         local hl = {
-            fg = utils.colors.palette.dragonRed,
+            fg = utils.colors.red,
             bold = true,
         }
         if utils.conditions.lsp_attached() then
-            hl.fg = utils.colors.palette.dragonGreen
+            hl.fg = utils.colors.green
         end
         return hl
     end
@@ -251,19 +251,19 @@ local Diagnostics = {
         provider = function(self)
             return self.errors .. " "
         end,
-        hl = { fg = utils.colors.theme.diag.error },
+        hl = { fg = utils.colors.red },
     },
     {
         provider = function(self)
             return self.warnings .. " "
         end,
-        hl = { fg = utils.colors.theme.diag.warning },
+        hl = { fg = utils.colors.yellow },
     },
     {
         provider = function(self)
             return self.info
         end,
-        hl = { fg = utils.colors.theme.diag.info },
+        hl = { fg = utils.colors.blue },
     },
     {
         provider = " ",
@@ -276,7 +276,7 @@ local Git = {
         self.status_dict = vim.b.gitsigns_status_dict
     end,
     hl = {
-        fg = utils.colors.theme.ui.fg,
+        fg = utils.colors.text,
     },
     {
         provider = function(self)
@@ -292,7 +292,7 @@ local Git = {
         end,
         hl = {
             bold = true,
-            fg = utils.colors.theme.vcs.added,
+            fg = utils.colors.green,
         },
     },
     {
@@ -302,7 +302,7 @@ local Git = {
         end,
         hl = {
             bold = true,
-            fg = utils.colors.theme.vcs.removed,
+            fg = utils.colors.red,
         },
     },
     {
@@ -312,7 +312,7 @@ local Git = {
         end,
         hl = {
             bold = true,
-            fg = utils.colors.theme.vcs.changed,
+            fg = utils.colors.yellow,
         },
     },
 }
@@ -329,7 +329,7 @@ local DefaultStatusLine = {
     Git,
     hl = function()
         return {
-            bg = utils.colors.theme.ui.bg,
+            bg = utils.colors.mantle,
         }
     end,
 }
@@ -341,7 +341,7 @@ local InactiveStatusline = {
     Align,
     hl = function()
         return {
-            bg = utils.colors.theme.ui.bg,
+            bg = utils.colors.mantle,
         }
     end,
 }
@@ -353,7 +353,7 @@ local TerminalName = {
     end,
     hl = {
         -- fg = utils.colors.palette.dragonBlue,
-        fg = utils.colors.palette.dragonBlack6,
+        fg = utils.colors.base,
         bold = true,
     },
 }
@@ -364,7 +364,7 @@ local TerminalStatusline = {
     end,
     hl = function()
         return {
-            bg = utils.colors.theme.ui.bg,
+            bg = utils.colors.mantle,
         }
     end,
     { condition = utils.conditions.is_active, Mode },

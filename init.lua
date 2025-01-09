@@ -12,3 +12,4 @@ require("sky.globals")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 require("sky.lazy")
+vim.cmd 'colorscheme evergarden'

@@ -38,6 +38,7 @@ table.insert(M, {
                     "jsonls",
                     "lua_ls",
                     "ts_ls",
+                    "gopls",
                 },
             },
         },

@@ -48,6 +48,7 @@ return {
         dependencies = {
             {
                 "L3MON4D3/LuaSnip",
+                version = "v2.*",
                 build = (function()
                     -- Build Step is needed for regex support in snippets.
                     -- This step is not supported in many windows environments.
@@ -104,7 +105,7 @@ return {
         ---@type blink.cmp.Config
         opts = {
             sources = {
-                default = { "lsp", "lazydev", "path", "snippets", "buffer", "copilot", "luasnip", "dadbod" },
+                default = { "lsp", "lazydev", "path", "snippets", "buffer", "copilot", "dadbod" },
                 cmdline = function()
                     local type = vim.fn.getcmdtype()
 
@@ -121,35 +122,32 @@ return {
                         name = "LazyDev",
                         enabled = true,
                         module = "lazydev.integrations.blink",
-                        score_offset = 1010,
-                        max_items = 10,
+                        score_offset = 11,
                     },
                     lsp = {
                         name = "lsp",
                         enabled = true,
                         module = "blink.cmp.sources.lsp",
+                        fallbacks = {},    -- do not use `buffer` as a fallback
                         -- kind = "LSP",
-                        score_offset = 1000, -- higher number = higher priority
-                        max_items = 10,
+                        score_offset = 10, -- higher number = higher priority
                     },
-                    luasnip = {
-                        name = "luasnip",
-                        enabled = true,
-                        module = "blink.cmp.sources.luasnip",
-                        score_offset = 950,
-                        max_items = 5,
+                    buffer = {
+                        max_items = 4,
+                        min_keyword_length = 4,
+                        score_offset = 2
                     },
                     snippets = {
                         name = "snippets",
                         enabled = true,
                         module = "blink.cmp.sources.snippets",
-                        score_offset = 900,
-                        max_items = 5,
+                        score_offset = 9,
+                        min_keyword_length = 1,
                     },
                     dadbod = {
                         name = "dadbod",
                         module = "vim_dadbod_completion.blink",
-                        score_offset = 950,
+                        score_offset = 9,
                     },
                     -- third class citizen mf always talking shit
                     copilot = {
@@ -157,12 +155,22 @@ return {
                         enabled = true,
                         module = "blink-cmp-copilot",
                         -- kind = "Copilot",
-                        score_offset = -100,
+                        score_offset = -1,
                         async = true,
+                        transform_items = function(_, items)
+                            local CompletionItemKind = require('blink.cmp.types').CompletionItemKind
+                            local kind_idx = #CompletionItemKind + 1
+                            CompletionItemKind[kind_idx] = "Copilot"
+                            for _, item in ipairs(items) do
+                                item.kind = kind_idx
+                            end
+                            return items
+                        end
                     },
                 },
             },
             snippets = {
+                preset = "luasnip",
                 expand = function(snippet)
                     require("luasnip").lsp_expand(snippet)
                 end,
@@ -179,6 +187,10 @@ return {
             appearance = {
                 use_nvim_cmp_as_default = true,
                 nerd_font_variant = "normal",
+                kind_icons = vim.tbl_extend("keep", {
+                    Color = "██",
+                    Copilot = sky.ui.icons.kind.Text
+                }, sky.ui.icons.kind)
             },
             keymap = {
                 ["<M-j>"] = {
@@ -267,18 +279,26 @@ return {
                     -- winblend = 25,
                     scrollbar = false,
                     draw = {
-                        align_to_component = "label",
+                        align_to = "label",
                         padding = 1,
                         gap = 1,
+                        treesitter = { "lsp" },
                         components = {
+                            label = {
+                                width = { min = 20, fill = false }
+                            },
                             kind = {
                                 width = { fill = false },
+                                text = function(ctx)
+                                    return string.lower(ctx.kind)
+                                end
                             },
                         },
                         columns = {
+                            { "kind_icon", gap = 1 },
                             { "label" },
-                            { "kind_icon",  "kind", gap = 1 },
-                            { "source_name" },
+                            -- { "kind_icon",  "kind", gap = 1 },
+                            { "kind" },
                         },
                     },
                 },
@@ -286,7 +306,10 @@ return {
                     range = "full",
                 },
                 list = {
-                    selection = "preselect",
+                    selection = {
+                        preselect = true,
+                        auto_insert = function(ctx) return ctx.mode == 'cmdline' end
+                    }
                 },
                 documentation = {
                     auto_show = true,

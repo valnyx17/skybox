@@ -15,6 +15,7 @@ M.lsp_attached = function()
 end
 M.fn = require("heirline.utils")
 
-M.colors = require("kanagawa.colors").setup()
+-- M.colors = require("kanagawa.colors").setup()
+M.colors = require('evergarden').colors()
 
 return M
