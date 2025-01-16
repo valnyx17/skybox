@@ -39,7 +39,7 @@ nmapt("<leader>tn", "<cmd>tabnext<CR>", { desc = "next tab" })
 nmapt("<leader>tp", "<cmd>tabprevious<CR>", { desc = "previous tab" })
 ---[[
 for i=1,10 do
-  nmapt("<leader>t" .. i == 10 and 0 or i, i .. "gt", { desc = "switch to tab " .. i})
+  nmapt("<leader>t" .. (i == 10 and 0 or i), i .. "gt", { desc = "switch to tab " .. i})
 end
 --]]
 
