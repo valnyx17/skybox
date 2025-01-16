@@ -83,14 +83,14 @@ au("FileType", {
   pattern = { "man" }
 })
 
-au("BufWritePre", {
+-- :h ++p
+au({"BufWritePre", "FileWritePre"}, {
   group = rc,
   callback = function(event)
-    if event.match:match("^%w%w+:[\\/][\\/]") then
-      return
+    if not event.match:match("^%w%w+:[\\/][\\/]") then
+      local file = vim.uv.fs_realpath(event.match) or event.match
+      vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
     end
-    local file = vim.uv.fs_realpath(event.match) or event.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
 
@@ -104,15 +104,4 @@ au({"BufEnter", "BufWritePre"}, {
     vim.fn.matchadd("BugHint", "\\( FIXME:\\)")
     vim.fn.matchadd("WarnHint", "\\( WARN:\\)")
   end,
-})
-
--- :h ++p
-au({"BufWritePre", "FileWritePre"}, {
-  group = rc,
-  pattern = "*",
-  callback = function(event)
-    if event.file:find("\\(://\\)") ~= nil then
-      vim.fn.mkdir(vim.fn.expand(event.file .. ":p:h"))
-    end
-  end
 })
