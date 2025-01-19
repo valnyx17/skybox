@@ -19,6 +19,7 @@ local opts = {
     guifont = "Sky Term:h12.5:#e-subpixelantialias",
   },
   opt = {
+    hlsearch = false,
     cmdheight = 0,
     guicursor = {
       "n-v:block-Cursor/lCursor",
@@ -39,8 +40,8 @@ local opts = {
     mousescroll = "ver:8,hor:6",
     mousemoveevent = true,
     -- tabs
-    tabstop = 2,
-    vartabstop = "2", -- all tabs represented as four spaces
+    tabstop = 4,
+    vartabstop = "4", -- all tabs represented as four spaces
     shiftwidth = 0,   -- tabstop
     softtabstop = -1, -- use shiftwidth
     expandtab = true, -- <Tab> inserts spaces, ^V<Tab> inserts <Tab>
@@ -54,7 +55,7 @@ local opts = {
     -- linebreaks
     linebreak = true,
     breakindent = true,
-    wrap = true,
+    wrap = false, -- see augroup 'rc/textwidth'
     textwidth = 120,
     breakindentopt = {
       shift = 2,

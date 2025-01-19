@@ -1,4 +1,4 @@
-local keymap = require('skybox.util').keymap
+local keymap = require('skybox.util.keymap')
 local k = vim.keycode
 
 --- normal mode keymapper
@@ -44,20 +44,25 @@ end
 --]]
 
 -- buffer manipulation
-if (vim.fn.exists(":FzfLua")) then nmapt("<leader>bf", "<cmd>FzfLua buffers<CR>", { desc = "find buffer" }) end
 nmapt("<leader>bd", "<cmd>bdelete<CR>", { desc = "delete buffer" })
 nmapt("<leader>bn", "<cmd>enew<CR>", { desc = "new buffer" })
 nmap("<C-s>", "<cmd>w<CR>", { desc = "write file" })
 
 -- center lines after certain motions
-nmap("<C-d>", "<C-d>zz")
-nmap("<C-u>", "<C-u>zz")
-nmap("n", "nzz")
-nmap("N", "Nzz")
-nmap("*", "*zz")
-nmap("#", "#zz")
-nmap("g*", "g*zz")
-nmap("g#", "g#zz")
+nmap("<C-d>", "<C-d>zzzv")
+nmap("<C-u>", "<C-u>zzzv")
+-- nmap("n", "nzzzv")
+-- nmap("N", "Nzzzv")
+-- nmap("*", "*zzzv")
+-- nmap("#", "#zzzv")
+-- nmap("g*", "g*zzzv")
+-- nmap("g#", "g#zzzv")
+nmap("n", function() keymap.animated_search("nzzzv", vim.fn.getreg("/")) end, { noremap=true, silent=true })
+nmap("N", function() keymap.animated_search("Nzzzv", vim.fn.getreg("/")) end, { noremap=true, silent=true })
+nmap("*", function() keymap.animated_search("*zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
+nmap("#", function() keymap.animated_search("#zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
+nmap("g*", function() keymap.animated_search("g*zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
+nmap("g#", function() keymap.animated_search("g#zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
 -- move by screen line, not text line
 keymap.set({"n", "v"}, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 keymap.set({"n", "v"}, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
@@ -69,13 +74,17 @@ nmap("<leader>ec", [[:%s/\s\+$//e<cr>]], { desc = "remove trailing spaces" })
 -- delete without affecting clipboard
 nmap("x", '"_dl')
 nmap("X", '"_dh')
-vmap("p", '"_dkp')
-vmap("P", '"_dkP')
 vmap("x", '"_x')
 vmap("X", '"_X')
 -- paste and autoindent
-keymap.set({ "n", "v" }, "p", "p=`]", { remap = true })
-keymap.set({ "n", "v" }, "P", "P=`]", { remap = true })
+-- nmap("n", "p", "p=`]", { remap = true })
+-- nmap("P", "P=`]", { remap = true })
+-- vmap("p", '"_dkp=`]')
+-- vmap("P", '"_dkP=`]')
+nmap("P", function() keymap.animated_paste("P", "n") end, { noremap = true, silent = true })
+nmap("p", function() keymap.animated_paste("p", "n") end, { noremap = true, silent = true })
+vmap("p", function() keymap.animated_paste("p", "v") end, { noremap = true, silent = true })
+vmap("P", function() keymap.animated_paste("P", "v") end, { noremap = true, silent = true })
 -- TODO: make mini.move autoremove these
 -- line movement
 vmap("J", ":m '>+1<CR>gv=gv")
