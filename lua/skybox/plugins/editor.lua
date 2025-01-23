@@ -121,7 +121,7 @@ return {
   },
   {
     "echasnovski/mini.pairs",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       modes = { insert = true, command = true, terminal = false },
       -- skip autopair when next character is one of these
@@ -318,7 +318,7 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
-    event = "UiEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     config = function()
       require("gitsigns").setup({
         attach_to_untracked = false,

@@ -3,7 +3,7 @@ return {
     "nvim-treesitter/nvim-treesitter",
     module = "nvim-treesitter",
     build = ":TSUpdate",
-    event = { "VeryLazy" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
     },
@@ -31,7 +31,7 @@ return {
   },
   {
     "Wansmer/treesj",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     keys = { "gJ" },
     config = function()
       require('skybox.util.keymap').set("n", "gJ", require('treesj').toggle, { desc = "treesj join" })
@@ -39,7 +39,7 @@ return {
   },
   {
     "danymat/neogen",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = "nvim-treesitter/nvim-treesitter",
     opts = {
       languages = {
@@ -57,20 +57,21 @@ return {
     },
     config = function(_, opts)
       require("neogen").setup(opts)
-      require('skybox.util.keymap').set("n", "<leader>id", require('neogen').generate, { desc = "[i]nsert [d]ocumentation (neogen)" })
+      require('skybox.util.keymap').set("n", "<leader>id", require('neogen').generate,
+        { desc = "[i]nsert [d]ocumentation (neogen)" })
     end,
   },
 
   -- Treesitter context
   {
     "nvim-treesitter/nvim-treesitter-context",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = { mode = "cursor", max_lines = 2 },
   },
 
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     config = function()
       require("nvim-treesitter.configs").setup({
         highlight = { enable = true },

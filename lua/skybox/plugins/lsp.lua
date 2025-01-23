@@ -38,7 +38,7 @@ return {
     dependencies = {
       { "williamboman/mason-lspconfig.nvim", config = function() end },
       { "smjonas/inc-rename.nvim",           opts = {} },
-      { "mrcjkb/rustaceanvim",               lazy = false },
+      { "mrcjkb/rustaceanvim",               lazy = true },
     },
     opts = function()
       local ret = {
@@ -351,7 +351,8 @@ return {
     "kevinhwang91/nvim-ufo",
     -- cond = vim.o.foldlevel > 0 and vim.o.foldmethod ~= "manual",
     dependencies = "kevinhwang91/promise-async",
-    event = "UIEnter", -- needed for folds to load in time and comments being closed
+    -- event = "UIEnter", -- needed for folds to load in time and comments being closed
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     keys = {
       { "z?", vim.cmd.UfoInspect, desc = "󱃄 :UfoInspect" },
       {

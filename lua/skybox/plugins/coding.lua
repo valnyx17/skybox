@@ -46,6 +46,7 @@ return {
   },
   {
     "saghen/blink.cmp",
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
       {
         "L3MON4D3/LuaSnip",
@@ -288,7 +289,7 @@ return {
   },
   {
     "echasnovski/mini.ai",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = function()
       local ai = require('mini.ai')
       return {
@@ -324,12 +325,12 @@ return {
   },
   {
     "echasnovski/mini.move",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {},
   },
   {
     "echasnovski/mini.jump",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       mappings = {
         forward = "f",
@@ -346,17 +347,17 @@ return {
   },
   {
     "echasnovski/mini.jump2d",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {},
   },
   {
     "echasnovski/mini.comment",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {},
   },
   {
     "echasnovski/mini.surround",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       mappings = {
         add = "ys",             -- Add surrounding in Normal and Visual modes
@@ -374,7 +375,7 @@ return {
   },
   {
     "echasnovski/mini.bracketed",
-    event = "BufEnter",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {},
   }
 }
