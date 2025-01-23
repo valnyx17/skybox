@@ -1,4 +1,4 @@
-local keymap = require('skybox.util.keymap')
+local keymap = Skybox.keymap
 local k = vim.keycode
 
 --- normal mode keymapper
@@ -14,17 +14,19 @@ local imap = keymap.create_mapper("i")
 local keys = { "h", "j", "k", "l" }
 local dirs = { "Left", "Down", "Up", "Right" }
 local nav = "NvimTmuxNavigate"
-for i=1,4 do
-  nmap("<C-" .. keys[i] .. ">", (vim.fn.exists(":" .. nav .. dirs[i]) ~= 0) and "<cmd>" .. nav .. dirs[i] .. "<CR>" or "<c-w><c-" .. keys[i] .. ">", { desc = "Navigate " .. dirs[i] })
+for i = 1, 4 do
+  nmap("<C-" .. keys[i] .. ">",
+    (vim.fn.exists(":" .. nav .. dirs[i]) ~= 0) and "<cmd>" .. nav .. dirs[i] .. "<CR>" or "<c-w><c-" .. keys[i] .. ">",
+    { desc = "Navigate " .. dirs[i] })
 end
 
 -- split manipulation
 nmap("<leader>|", "<C-w>v", { desc = "vertical split" })
 nmap("<leader>-", "<C-w>s", { desc = "horizontal split" })
-nmap("<leader>sv", "<C-w>v", { desc = "vertical split" })
-nmap("<leader>sh", "<C-w>s", { desc = "horizontal split" })
-nmap("<leader>se", "<C-w>=", { desc = "make splits equal size" })
-nmap("<leader>sd", "<cmd>close<cr>", { desc = "close current split" })
+nmap("<localleader>sv", "<C-w>v", { desc = "vertical split" })
+nmap("<localleader>sh", "<C-w>s", { desc = "horizontal split" })
+nmap("<localleader>se", "<C-w>=", { desc = "make splits equal size" })
+nmap("<localleader>sd", "<cmd>close<cr>", { desc = "close current split" })
 -- resize splits
 nmap("<C-M-h>", ":vert resize +2<CR>", { desc = "resize split left" })
 nmap("<C-M-j>", ":resize -2<CR>", { desc = "resize split down" })
@@ -32,20 +34,20 @@ nmap("<C-M-k>", ":resize +2<CR>", { desc = "resize split up" })
 nmap("<C-M-l>", ":vert resize -2<CR>", { desc = "resize split right" })
 
 -- tab manipulation
-nmapt("<leader>to", "<cmd>tabnew<CR>", { desc = "new tab" })
-nmapt("<leader>tf", "<cmd>tabnew %<CR>", { desc = "open current buffer in new tab" })
-nmapt("<leader>td", "<cmd>tabclose<CR>", { desc = "close tab" })
-nmapt("<leader>tn", "<cmd>tabnext<CR>", { desc = "next tab" })
-nmapt("<leader>tp", "<cmd>tabprevious<CR>", { desc = "previous tab" })
+nmapt("<localleader>to", "<cmd>tabnew<CR>", { desc = "new tab" })
+nmapt("<localleader>tf", "<cmd>tabnew %<CR>", { desc = "open current buffer in new tab" })
+nmapt("<localleader>td", "<cmd>tabclose<CR>", { desc = "close tab" })
+nmapt("<localleader>tn", "<cmd>tabnext<CR>", { desc = "next tab" })
+nmapt("<localleader>tp", "<cmd>tabprevious<CR>", { desc = "previous tab" })
 ---[[
-for i=1,10 do
-  nmapt("<leader>t" .. (i == 10 and 0 or i), i .. "gt", { desc = "switch to tab " .. i})
+for i = 1, 10 do
+  nmapt("<leader>t" .. (i == 10 and 0 or i), i .. "gt", { desc = "switch to tab " .. i })
 end
 --]]
 
 -- buffer manipulation
-nmapt("<leader>bd", "<cmd>bdelete<CR>", { desc = "delete buffer" })
-nmapt("<leader>bn", "<cmd>enew<CR>", { desc = "new buffer" })
+nmapt("<localleader>bd", "<cmd>bdelete<CR>", { desc = "delete buffer" })
+nmapt("<localleader>bn", "<cmd>enew<CR>", { desc = "new buffer" })
 nmap("<C-s>", "<cmd>w<CR>", { desc = "write file" })
 
 -- center lines after certain motions
@@ -57,15 +59,15 @@ nmap("<C-u>", "<C-u>zzzv")
 -- nmap("#", "#zzzv")
 -- nmap("g*", "g*zzzv")
 -- nmap("g#", "g#zzzv")
-nmap("n", function() keymap.animated_search("nzzzv", vim.fn.getreg("/")) end, { noremap=true, silent=true })
-nmap("N", function() keymap.animated_search("Nzzzv", vim.fn.getreg("/")) end, { noremap=true, silent=true })
-nmap("*", function() keymap.animated_search("*zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
-nmap("#", function() keymap.animated_search("#zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
-nmap("g*", function() keymap.animated_search("g*zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
-nmap("g#", function() keymap.animated_search("g#zzzv", vim.fn.expand("<cword>")) end, { noremap=true, silent=true })
+nmap("n", function() keymap.animated_search("nzzzv", vim.fn.getreg("/")) end, { noremap = true, silent = true })
+nmap("N", function() keymap.animated_search("Nzzzv", vim.fn.getreg("/")) end, { noremap = true, silent = true })
+nmap("*", function() keymap.animated_search("*zzzv", vim.fn.expand("<cword>")) end, { noremap = true, silent = true })
+nmap("#", function() keymap.animated_search("#zzzv", vim.fn.expand("<cword>")) end, { noremap = true, silent = true })
+nmap("g*", function() keymap.animated_search("g*zzzv", vim.fn.expand("<cword>")) end, { noremap = true, silent = true })
+nmap("g#", function() keymap.animated_search("g#zzzv", vim.fn.expand("<cword>")) end, { noremap = true, silent = true })
 -- move by screen line, not text line
-keymap.set({"n", "v"}, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
-keymap.set({"n", "v"}, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+keymap.set({ "n", "v" }, "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+keymap.set({ "n", "v" }, "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 
 -- text manipulation
 -- various edit commands
@@ -81,10 +83,10 @@ vmap("X", '"_X')
 -- nmap("P", "P=`]", { remap = true })
 -- vmap("p", '"_dkp=`]')
 -- vmap("P", '"_dkP=`]')
-nmap("P", function() keymap.animated_paste("P", "n") end, { noremap = true, silent = true })
-nmap("p", function() keymap.animated_paste("p", "n") end, { noremap = true, silent = true })
-vmap("p", function() keymap.animated_paste("p", "v") end, { noremap = true, silent = true })
-vmap("P", function() keymap.animated_paste("P", "v") end, { noremap = true, silent = true })
+nmap("P", "P=`]", { noremap = true, silent = true })
+nmap("p", "p=`]", { noremap = true, silent = true })
+vmap("p", '"_dkp=`]', { noremap = true, silent = true })
+vmap("P", '"_dP=`]', { noremap = true, silent = true })
 -- TODO: make mini.move autoremove these
 -- line movement
 vmap("J", ":m '>+1<CR>gv=gv")
@@ -95,7 +97,7 @@ vmap(">", ">gv")
 imap("<C-Return>", "<Esc>o")
 imap("<C-S-Return>", "<Esc>O")
 -- copy
-keymap.set({"v", "x", "o"}, "<C-c>", '"+y')
+keymap.set({ "v", "x", "o" }, "<C-c>", '"+y')
 nmap("<C-c>", 'V"+y')
 -- start/end of line
 keymap.set({ "n", "x", "o" }, "H", "^")

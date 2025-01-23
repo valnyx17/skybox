@@ -6,6 +6,7 @@ local borders = {
   empty = { " ", " ", " ", " ", " ", " ", " ", " " },
 }
 
+---@class skybox.util.ui
 local M = {
   cur_border = borders.invs,
   borders = borders,
@@ -16,6 +17,13 @@ local M = {
     hint = "▫", -- alts:  󰬏 󰰀  󰌶 󰰂 󰰂 󰰁 󰫵 󰋢   
     ok = "✓", -- alts: ✓✓
     clients = "", -- alts:     󱉓 󱡠 󰾂 
+  },
+  dap = {
+    Stopped             = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+    Breakpoint          = " ",
+    BreakpointCondition = " ",
+    BreakpointRejected  = { " ", "DiagnosticError" },
+    LogPoint            = ".>",
   },
   icons = {
     kind = {
