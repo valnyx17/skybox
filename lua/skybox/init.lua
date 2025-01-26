@@ -24,6 +24,8 @@ if not ok then
 end
 
 _G.Skybox = require("skybox.util")
+require("skybox.autocmds")
+require("skybox.opts")
 
 lazy.setup({
   spec = {
@@ -79,10 +81,7 @@ lazy.setup({
   },
 })
 
-vim.cmd [[colorscheme evergarden]]
-
-require("skybox.autocmds")
-require("skybox.opts")
+vim.cmd [[colorscheme lackluster]]
 
 Skybox.on_very_lazy(function()
   require("skybox.keymaps")

@@ -8,20 +8,33 @@ return {
       },
       animations = {
         fade = {
-          from_color = "#e67e80",
+          from_color = "Visual",
           to_color = "Normal"
         }
       }
     }
   },
   {
-    "comfysage/evergarden",
+    "slugbyte/lackluster.nvim",
     lazy = false,
     priority = 9999,
-    opts = {
-      variant = 'hard',
-      transparent_background = false,
-    },
+    config = function()
+      local lackluster = require("lackluster")
+      local color = lackluster.color
+
+      -- custom lackluster variant. currently a combination of lackluster-hack and lackluster-mint.
+      lackluster.setup({
+        tweak_syntax = {
+          keyword_return = color.green,
+          keyword_exception = color.blue,
+          type = color.green,
+          type_primitive = color.green,
+          func_param = color.gray7,
+        },
+        disable_plugin = {},
+      })
+      vim.cmd [[colorscheme lackluster]]
+    end
   },
   {
     "rebelot/heirline.nvim",

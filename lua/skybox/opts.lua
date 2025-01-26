@@ -2,6 +2,10 @@ vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or (vim.env.HOME .. "/.config"
 local set = vim.opt
 local g = vim.g
 
+-- Undercurl
+vim.cmd [[let &t_Cs = "\e[4:3m"]]
+vim.cmd [[let &t_Ce = "\e[4:0m"]]
+
 g.mapleader = " "
 g.maplocalleader = ","
 g.neovide_hide_mouse_when_typing = true
