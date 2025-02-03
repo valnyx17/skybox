@@ -8,7 +8,7 @@ return {
       },
       animations = {
         fade = {
-          from_color = "Visual",
+          from_color = "IncSearch",
           to_color = "Normal"
         }
       }
@@ -25,11 +25,26 @@ return {
       -- custom lackluster variant. currently a combination of lackluster-hack and lackluster-mint.
       lackluster.setup({
         tweak_syntax = {
-          keyword_return = color.green,
+          -- keyword_return = color.green,
           keyword_exception = color.blue,
           type = color.green,
           type_primitive = color.green,
           func_param = color.gray7,
+          comment = "#474747",
+        },
+        tweak_highlight = {
+          ["Operator"] = {
+            overwrite = false,
+            fg = "#1bfd9c",
+            bold = true,
+          },
+          ["@operator"] = {
+            overwrite = true,
+            link = "Operator"
+          },
+          ["IncSearch"] = { overwrite = true, fg = color.black, bg = "#1bfd9c" },
+          ["Search"] = { overwrite = true, fg = "#1bfd9c", bold = true },
+          ["PmenuSel"] = { overwrite = true, fg = color.black, bg = "#1bfd9c", bold = true },
         },
         disable_plugin = {},
       })

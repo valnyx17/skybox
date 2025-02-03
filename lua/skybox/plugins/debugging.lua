@@ -196,6 +196,29 @@ return {
     config = function(_, opts)
       local dap = require("dap")
       local dapui = require("dapui")
+
+      dap.set_log_level('INFO')
+
+      dap.adapters.codelldb = {
+        type = "executable",
+        command = vim.fn.stdpath('data') .. "/mason/bin/codelldb",
+      }
+
+      dap.configurations = {
+        cpp = {
+          {
+            name = "Launch",
+            type = "codelldb",
+            request = "launch",
+            program = function()
+              return vim.fn.input('path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            end,
+            cwd = '${workspaceFolder}',
+            stopOnEntry = false,
+          }
+        }
+      }
+
       dapui.setup(opts)
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open({})

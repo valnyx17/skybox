@@ -84,6 +84,7 @@ return {
         }
       },
       dashboard = {
+        enabled = false,
         preset = {
           pick = function(cmd, opts)
             return Skybox.pick(cmd, opts)()

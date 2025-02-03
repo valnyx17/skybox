@@ -13,7 +13,7 @@ local imap = keymap.create_mapper("i")
 -- navigation with support for whether or not I have nvimtmuxnavigate
 local keys = { "h", "j", "k", "l" }
 local dirs = { "Left", "Down", "Up", "Right" }
-local nav = "NvimTmuxNavigate"
+local nav = "Navigator"
 for i = 1, 4 do
   nmap("<C-" .. keys[i] .. ">",
     (vim.fn.exists(":" .. nav .. dirs[i]) ~= 0) and "<cmd>" .. nav .. dirs[i] .. "<CR>" or "<c-w><c-" .. keys[i] .. ">",

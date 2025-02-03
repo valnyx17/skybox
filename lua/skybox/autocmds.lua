@@ -119,7 +119,7 @@ end)
 
 aug("rc/auto-++p", function(g)
   -- :h ++p
-  au({"BufWritePre", "FileWritePre"}, {
+  au({ "BufWritePre", "FileWritePre" }, {
     group = g,
     callback = function(event)
       if not event.match:match("^%w%w+:[\\/][\\/]") then
@@ -164,7 +164,7 @@ aug("rc/cmdline", function(g)
   })
 end)
 
-aug("rc/toggle-search-hl", function()
+aug("rc/toggle-search-hl", function(g)
   au("InsertEnter", {
     group = g,
     callback = function()
@@ -180,7 +180,8 @@ aug("rc/toggle-search-hl", function()
       -- Move the cursor to a position where (whereas in active search) pressing `n`
       -- brings us to the original cursor position, in a forward search / that means
       -- one column before the match, in a backward search ? we move one col forward
-      vim.cmd(string.format("silent! keepjumps go%s", (fn.line2byte(view.lnum) + view.col + 1 - (vim.v.searchforward == 1 and 2 or 0))))
+      vim.cmd(string.format("silent! keepjumps go%s",
+        (fn.line2byte(view.lnum) + view.col + 1 - (vim.v.searchforward == 1 and 2 or 0))))
       -- Attempt to goto next match, if we're in an active search cursor position
       -- should be equal to original cursor position
       local ok, _ = pcall(vim.cmd, "silent! keepjumps norm! n")
@@ -268,7 +269,9 @@ aug("rc/two-space-indents", function(g)
     desc = "set tabwidths to 2 on certain files",
     pattern = {
       "nix",
-      "lua"
+      "lua",
+      "cpp",
+      "c"
     },
     callback = function()
       local setlocal = vim.opt_local

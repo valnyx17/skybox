@@ -38,6 +38,7 @@ return {
       sql = { "sql_formatter" },
       go = { "gofmt" },
       nix = { "alejandra" },
+      cpp = { "clang-format" }
     },
 
     format_on_save = function(bufnr)

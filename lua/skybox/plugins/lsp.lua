@@ -34,7 +34,7 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     dependencies = {
       { "williamboman/mason-lspconfig.nvim", config = function() end },
       { "smjonas/inc-rename.nvim",           opts = {} },
@@ -42,8 +42,6 @@ return {
     },
     opts = function()
       local ret = {
-        on_attach = function(client, bufnr)
-        end,
         -- options for vim.diagnostic.config()
         ---@type vim.diagnostic.Opts
         diagnostics = {
@@ -251,9 +249,10 @@ return {
           nmap("gy", "<cmd>FzfLua lsp_typedefs jump_to_single_result=true ignore_current_line=true<CR>")
         end
 
-        if client.supports_method(methods.textDocument_hover) then
-          nmap("K", lsp.hover, { desc = "Lsp Hover" })
-        end
+        -- if client.supports_method(methods.textDocument_hover) then
+        nmap("K", lsp.hover, { desc = "Lsp Hover" })
+        -- nmap("K", require("lsp_hover").hover, { desc = "Lsp Hover" })
+        -- end
 
         if client.supports_method(methods.textDocument_signatureHelp) then
           keymap.set("i", "<C-k>", lsp.signature_help, { desc = "Lsp Signature Help" })
@@ -352,7 +351,7 @@ return {
     -- cond = vim.o.foldlevel > 0 and vim.o.foldmethod ~= "manual",
     dependencies = "kevinhwang91/promise-async",
     -- event = "UIEnter", -- needed for folds to load in time and comments being closed
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     keys = {
       { "z?", vim.cmd.UfoInspect, desc = "󱃄 :UfoInspect" },
       {
@@ -452,6 +451,7 @@ return {
   },
   {
     "p00f/clangd_extensions.nvim",
+    event = "LazyProject:cpplib",
     lazy = true,
     config = function() end,
     opts = {

@@ -289,7 +289,7 @@ return {
   },
   {
     "echasnovski/mini.ai",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = function()
       local ai = require('mini.ai')
       return {
@@ -325,12 +325,12 @@ return {
   },
   {
     "echasnovski/mini.move",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {},
   },
   {
     "echasnovski/mini.jump",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {
       mappings = {
         forward = "f",
@@ -347,17 +347,17 @@ return {
   },
   {
     "echasnovski/mini.jump2d",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {},
   },
   {
     "echasnovski/mini.comment",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {},
   },
   {
     "echasnovski/mini.surround",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {
       mappings = {
         add = "ys",             -- Add surrounding in Normal and Visual modes
@@ -375,7 +375,7 @@ return {
   },
   {
     "echasnovski/mini.bracketed",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     opts = {},
   }
 }

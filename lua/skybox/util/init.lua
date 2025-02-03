@@ -141,4 +141,81 @@ function M.opts(name)
   return Plugin.values(plugin, "opts", false)
 end
 
+function M.setup_lazy()
+  local ok, lazy = pcall(require, "lazy")
+  if not ok then
+    vim.notify("failed to load plugin: lazy.nvim", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.g.lazy_events_config = {
+    simple = {
+      LazyFile = { "BufReadPost", "BufNewFile", "BufWritePre" },
+      TermUsed = { "TermOpen", "TermEnter", "TermLeave", "TermClose" },
+    },
+    projects = {
+      docker = { "Dockerfile", "compose.y*ml", "docker-compose.y*ml" },
+      cpplib = {
+        any = { "Makefile", "CMakeLists.txt", "Justfile", "BUILD", "BUILD.bazel" },
+        all = { "**/*.cpp", "**/*.h*" }, -- all expresions must match something
+      },
+    },
+  }
+
+  lazy.setup({
+    spec = {
+      { "bwpge/lazy-events.nvim", import = "lazy-events.import", lazy = false },
+      { import = "skybox.plugins" }
+    },
+    install = {
+      missing = true,
+      -- colorscheme = { "evergarden", "default" },
+    },
+    checker = {
+      enabled = true,
+      notify = false,
+    },
+    change_detection = {
+      enabled = true,
+      notify = false,
+    },
+    dev = {
+      path = "~/Documents/code/nvim",
+      patterns = { "valnyx17", "valnyx" },
+      fallback = false,
+    },
+    diff = {
+      cmd = "diffview.nvim",
+    },
+    defaults = {
+      lazy = false,
+      version = false,
+      cond = not vim.g.started_by_firenvim,
+    },
+    browser = "floorp",
+    rocks = {
+      enabled = false,
+      hererocks = false,
+    },
+    performance = {
+      cache = {
+        enabled = false,
+        disable_events = { "UiEnter" },
+      },
+      reset_packpath = true,
+      rtp = {
+        reset = true,
+        disabled_plugins = {
+          "gzip",
+          "netrwPlugin",
+          "tarPlugin",
+          "tohtml",
+          "tutor",
+          "zipPlugin",
+        },
+      },
+    },
+  })
+end
+
 return M
