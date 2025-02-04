@@ -11,6 +11,20 @@ local o = vim.opt
 g.mapleader = " "
 g.maplocalleader = ","
 
+g.lazy_events_config = {
+  simple = {
+    LazyFile = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    TermUsed = { "TermOpen", "TermEnter", "TermLeave", "TermClose" },
+  },
+  projects = {
+    docker = { "Dockerfile", "compose.y*ml", "docker-compose.y*ml" },
+    cpplib = {
+      any = { "Makefile", "CMakeLists.txt", "Justfile", "BUILD", "BUILD.bazel" },
+      all = { "**/*.cpp", "**/*.h*" }, -- all expresions must match something
+    },
+  },
+}
+
 o.cmdheight = 0
 
 -- better word movement
