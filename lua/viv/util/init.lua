@@ -12,3 +12,5 @@ local M = setmetatable({}, {
         return t[k]
     end
 })
+
+return M

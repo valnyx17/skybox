@@ -1,4 +1,5 @@
 {
+  "heirline.nvim": { "branch": "master", "commit": "af3f441ea10f96105e1af14cd37bf213533812d2" },
   "lazy-events.nvim": { "branch": "main", "commit": "63802b7ddc852bdfa29e33b158d52429276fa742" },
   "lazy.nvim": { "branch": "main", "commit": "7527af40ddd4a93a02911be570b32609b9d4ea53" },
   "mini.completion": { "branch": "main", "commit": "6a45799b62c5230e3ff1b75ca51d30c5173c7236" },
