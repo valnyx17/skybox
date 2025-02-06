@@ -13,4 +13,8 @@ For any functionality needed:
 
 ## Features
 
+- heavily opinionated options
+- custom statuscolumn
+- [blink.cmp](https://cmp.saghen.dev) configuration
+
 - TODO: list features as i add them.
