@@ -3,6 +3,7 @@ vim.loader.enable()
 require('viv.opts')
 require('viv.lazy')
 _G.viv = require('viv.util')
+require('viv.keymaps')
 local ok, lazy = pcall(require, 'lazy')
 if not ok then
   vim.notify("failed to load: lazy.nvim", vim.log.levels.ERROR)
@@ -11,7 +12,6 @@ end
 
 lazy.setup({
   spec = {
-    { "bwpge/lazy-events.nvim", import = "lazy-events.import", lazy = false },
     { import = "viv.plugins" }
   },
   install = {
